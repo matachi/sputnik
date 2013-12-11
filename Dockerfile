@@ -1,11 +1,16 @@
 FROM ubuntu:latest
 
 RUN apt-get update
+
+RUN mkdir /root/.pycharm_helpers
+
+# Install and set up SSH
+RUN apt-get install -y openssh-server
+RUN echo "root:pass" | chpasswd
+RUN mkdir /var/run/sshd
+
 RUN apt-get install -y python3 python3-setuptools sqlite3
-RUN easy_install3 django feedparser
+RUN easy_install3 pip
+RUN pip install django feedparser
 
-RUN cd usr/bin && touch run && echo "#\!sh\npython3 /sputnik/manage.py runserver 0.0.0.0:8000" > run && chmod u+x run && cd -
-
-WORKDIR /sputnik
-
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD /usr/sbin/sshd && bash
