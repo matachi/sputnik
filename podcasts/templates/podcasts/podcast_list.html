@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-{% for podcast in object_list %}
-<ul>
-  <li>{{ podcast.title }} {{ podcast.link }}</li>
-</ul>
-{% endfor %}
-{% endblock %}

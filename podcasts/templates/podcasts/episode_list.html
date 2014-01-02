@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-{% for episode in object_list %}
-<ul>
-  <li>{{ episode.title }} {{ episode.link }}</li>
-</ul>
-{% endfor %}
-{% endblock %}

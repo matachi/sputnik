@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% for episode in object_list %}
+        <ul>
+            <li>
+                <a href="{% url 'podcasts:episode' podcast=episode.podcast.pk episode=episode.pk %}">{{ episode.title }} {{ episode.link }}</a>
+            </li>
+        </ul>
+    {% endfor %}
+{% endblock %}
