@@ -1,0 +1,20 @@
+[
+    {
+        "model": "podcasts.Podcast",
+        "fields": {
+            "feed": "http://feed.nashownotes.com/rss.xml"
+        }
+    },
+    {
+        "model": "podcasts.Podcast",
+        "fields": {
+            "feed": "http://www.jupiterbroadcasting.com/feeds/coderradioogg.xml"
+        }
+    },
+    {
+        "model": "podcasts.Podcast",
+        "fields": {
+            "feed": "http://tackforkaffet.se/category/avsnitt/feed/"
+        }
+    }
+]
