@@ -16,6 +16,6 @@ class Podcast(models.Model):
 
 class Episode(models.Model):
     title = models.CharField(max_length=200)
-    link = models.URLField()
+    link = models.URLField(blank=True)
     description = models.TextField(blank=True)
     podcast = models.ForeignKey(Podcast)
