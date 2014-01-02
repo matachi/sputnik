@@ -11,11 +11,16 @@ class Command(BaseCommand):
             episodes = podcast.episode_set
             feed = feedparser.parse(podcast.feed)
             for feed_episode in feed.entries:
-                if len(episodes.filter(link=feed_episode.link)):
-                    # If the episode already is in the DB
+                try:
+                    if len(episodes.filter(podcast=podcast).filter(
+                            title=feed_episode.title)):
+                        # If the episode already is in the DB
+                        continue
+                except AttributeError:
+                    # The episode in the feed doesn't have a title
                     continue
                 episode = Episode(title=feed_episode.title,
-                                  link=feed_episode.link,
+                                  link=getattr(feed_episode, 'link', ''),
                                   description=feed_episode.summary,
                                   podcast=podcast)
                 episode.save()
