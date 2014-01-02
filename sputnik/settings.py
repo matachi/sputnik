@@ -89,4 +89,7 @@ STATICFILES_DIRS = (
 )
 
 
-TEMPLATE_DIRS = os.path.join(BASE_DIR, 'templates'),
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'podcasts/templates'),
+    os.path.join(BASE_DIR, 'sputnik/templates'),
+)
