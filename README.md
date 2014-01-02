@@ -31,6 +31,6 @@ the following settings:
     Auth type: Password
     Password: pass
     Python interpreter path: /usr/bin/python3
-    PyCharm helpers path: /root/pycharm_helpers
+    PyCharm helpers path: /root/.pycharm_helpers
 
 And before starting a *Django server*, configure the host IP to `0.0.0.0:8000`.
