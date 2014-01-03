@@ -16,7 +16,7 @@
       <tr>
         <td>{{ forloop.counter }}</td>
         <td><a href="{% url 'podcasts:episode' podcast=episode.podcast.pk episode=episode.pk %}">{{ episode.title }}</a></td>
-        <td><a href="{{ episode.link }}"><i class="glyphicon glyphicon-globe"></i></a></td>
+        <td><a href="{{ episode.link }}"><i class="fa fa-globe"></i></a></td>
         <td>{{ episode.published | date }}</td>
       </tr>
     {% endfor %}
