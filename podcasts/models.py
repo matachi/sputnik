@@ -20,3 +20,6 @@ class Episode(models.Model):
     description = models.TextField(blank=True)
     podcast = models.ForeignKey(Podcast)
     published = models.DateTimeField(blank=True)
+
+    def __str__(self):
+        return self.title
