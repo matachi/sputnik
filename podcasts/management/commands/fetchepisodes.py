@@ -1,3 +1,4 @@
+from dateutil import parser
 from django.core.management import BaseCommand
 import feedparser
 from podcasts.models import Podcast, Episode
@@ -19,8 +20,12 @@ class Command(BaseCommand):
                 except AttributeError:
                     # The episode in the feed doesn't have a title
                     continue
+                    # parser.parse(): http://stackoverflow.com/a/18726020/595990
                 episode = Episode(title=feed_episode.title,
                                   link=getattr(feed_episode, 'link', ''),
                                   description=feed_episode.summary,
-                                  podcast=podcast)
+                                  podcast=podcast,
+                                  published=parser.parse(
+                                      feed_episode.published),
+                )
                 episode.save()

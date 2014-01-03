@@ -11,6 +11,6 @@ RUN mkdir /var/run/sshd
 
 RUN apt-get install -y python3 python3-setuptools sqlite3
 RUN easy_install3 pip
-RUN pip install django feedparser
+RUN pip install django feedparser dateutils
 
 CMD /usr/sbin/sshd && bash

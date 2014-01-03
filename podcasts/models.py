@@ -19,3 +19,4 @@ class Episode(models.Model):
     link = models.URLField(blank=True)
     description = models.TextField(blank=True)
     podcast = models.ForeignKey(Podcast)
+    published = models.DateTimeField(blank=True)
