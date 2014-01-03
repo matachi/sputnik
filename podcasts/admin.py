@@ -1,5 +1,5 @@
 from django.contrib import admin
-from podcasts.models import Podcast, Episode
+from podcasts.models import Podcast, Episode, PodcastUserProfile
 
 
 class EpisodeInline(admin.StackedInline):
@@ -20,3 +20,9 @@ class EpisodeAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description')
 
 admin.site.register(Episode, EpisodeAdmin)
+
+
+class PodcastUserProfileAdmin(admin.ModelAdmin):
+    readonly_fields = ('user',)
+
+admin.site.register(PodcastUserProfile, PodcastUserProfileAdmin)
