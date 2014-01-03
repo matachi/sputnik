@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  <h2>Podcasts</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <td>Title</td>
+    </tr>
+    </thead>
+    <tbody>
     {% for podcast in object_list %}
-        <ul>
-            <li>
-                <a href="{% url 'podcasts:podcast' podcast.pk %}">{{ podcast.title }} {{ podcast.link }}</a>
-            </li>
-        </ul>
+      <tr>
+        <td>
+          <a href="{% url 'podcasts:podcast' podcast.pk %}">{{ podcast.title }} {{ podcast.link }}</a>
+        </td>
+      </tr>
     {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

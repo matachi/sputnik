@@ -1,11 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  <h2>{{ podcast }}</h2>
+  <table class="table">
+    <thead>
+    <tr>
+      <td>#</td>
+      <td>Title</td>
+      <td></td>
+      <td>Published</td>
+    </tr>
+    </thead>
+    <tbody>
     {% for episode in object_list %}
-        <ul>
-            <li>
-                <a href="{% url 'podcasts:episode' podcast=episode.podcast.pk episode=episode.pk %}">{{ episode.title }} {{ episode.link }}</a>
-            </li>
-        </ul>
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="{% url 'podcasts:episode' podcast=episode.podcast.pk episode=episode.pk %}">{{ episode.title }}</a></td>
+        <td><a href="{{ episode.link }}"><i class="glyphicon glyphicon-globe"></i></a></td>
+        <td>{{ episode.published | date }}</td>
+      </tr>
     {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

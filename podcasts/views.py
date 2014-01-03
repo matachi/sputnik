@@ -13,8 +13,14 @@ class Podcast(ListView):
     template_name = 'podcasts/podcast.html'
 
     def get_queryset(self):
-        podcast = get_object_or_404(models.Podcast, pk=self.kwargs['podcast'])
-        return models.Episode.objects.filter(podcast=podcast)
+        self.podcast = get_object_or_404(models.Podcast,
+                                         pk=self.kwargs['podcast'])
+        return models.Episode.objects.filter(podcast=self.podcast)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['podcast'] = self.podcast
+        return context
 
 
 class Episode(DetailView):
