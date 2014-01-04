@@ -26,7 +26,9 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="{% url 'podcasts:podcasts' %}">Podcasts</a></li>
+        <li><a href="{% url 'podcasts:podcasts' %}"><i class="fa fa-book fa-fw"></i> Library</a></li>
+        <li><a href="{% url 'podcasts:feed' %}"><i class="fa fa-home fa-fw"></i> Feed</a></li>
+        <li><a href="#"><i class="fa fa-users fa-fw"></i> Community</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}

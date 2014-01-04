@@ -22,7 +22,7 @@ class Episode(models.Model):
     title = models.CharField(max_length=200)
     link = models.URLField(blank=True)
     description = models.TextField(blank=True)
-    podcast = models.ForeignKey(Podcast)
+    podcast = models.ForeignKey(Podcast, related_name='episodes')
     published = models.DateTimeField(blank=True)
 
     def __str__(self):
@@ -30,7 +30,8 @@ class Episode(models.Model):
 
 
 class PodcastUserProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                related_name='podcasts_profile')
     subscribed_to = models.ManyToManyField(Podcast, related_name='subscribers',
                                            blank=True)
 

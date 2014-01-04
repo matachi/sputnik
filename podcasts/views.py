@@ -20,6 +20,7 @@ class Podcast(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['podcast'] = self.podcast
+        context['subscribed'] = self.podcast in self.request.user.podcasts_profile.subscribed_to.all()
         return context
 
 
@@ -30,3 +31,12 @@ class Episode(DetailView):
         podcast = get_object_or_404(models.Podcast, pk=self.kwargs['podcast'])
         episode = int(self.kwargs['episode']) - 1
         return models.Episode.objects.filter(podcast=podcast)[episode]
+
+
+class Feed(ListView):
+    template_name = 'podcasts/feed.html'
+
+    def get_queryset(self):
+        return models.Episode.objects.filter(
+            podcast=self.request.user.podcasts_profile.subscribed_to.all(),
+            published__gte='2013-12-01').order_by('-published')
