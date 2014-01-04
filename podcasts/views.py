@@ -20,7 +20,8 @@ class Podcast(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['podcast'] = self.podcast
-        context['subscribed'] = self.podcast in self.request.user.podcasts_profile.subscribed_to.all()
+        if self.request.user.is_authenticated():
+            context['subscribed'] = self.podcast in self.request.user.podcasts_profile.subscribed_to.all()
         return context
 
 

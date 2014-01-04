@@ -23,6 +23,6 @@ admin.site.register(Episode, EpisodeAdmin)
 
 
 class PodcastUserProfileAdmin(admin.ModelAdmin):
-    readonly_fields = ('user',)
+    pass
 
 admin.site.register(PodcastUserProfile, PodcastUserProfileAdmin)

@@ -4,12 +4,14 @@
   <div class="page-header">
     <h1>{{ podcast.title }}{% if podcast.description != "" %} <small>{{ podcast.description }}</small>{% endif %}</h1>
   </div>
-  {% if subscribed %}
-    <button type="button" class="btn btn-default btn-sm">Unsubscribe</button>
-  {% else %}
-    <button type="button" class="btn btn-primary btn-sm">Subscribe</button>
+  {% if user.is_authenticated %}
+    {% if subscribed %}
+      <button type="button" class="btn btn-default btn-sm">Unsubscribe</button>
+    {% else %}
+      <button type="button" class="btn btn-primary btn-sm">Subscribe</button>
+    {% endif %}
+    <hr>
   {% endif %}
-  <hr>
   <div class="table-responsive">
     <table class="table table-striped">
       <thead>
