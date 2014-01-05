@@ -23,7 +23,7 @@ $(function() {
             url: '/subscribe/',
             data: JSON.stringify({
                 subscribe: $button.html() === 'Subscribe',
-                podcast: 1
+                podcast: window.location.pathname.split('/')[2]
             }),
             contentType: 'application/json',
             type: 'POST',
