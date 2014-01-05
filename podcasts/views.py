@@ -1,7 +1,15 @@
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
+import json
+from rest_framework import status
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from podcasts import models
+from podcasts.models import PodcastUserProfile
+from podcasts.serializers import SubscribeSerializer
 
 
 class Podcasts(ListView):
@@ -41,3 +49,23 @@ class Feed(ListView):
         return models.Episode.objects.filter(
             podcast=self.request.user.podcasts_profile.subscribed_to.all(),
             published__gte='2013-12-01').order_by('-published')
+
+
+class Subscribe(APIView):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request, format=None):
+        serializer = SubscribeSerializer(data=request.DATA)
+        if serializer.is_valid():
+            podcasts_user_profile = request.user.podcasts_profile
+            podcast = models.Podcast.objects.get(pk=serializer.data['podcast'])
+            if serializer.data['subscribe']:
+                podcasts_user_profile.subscribed_to.add(podcast)
+                return Response({'status': 'subscribed'},
+                                status=status.HTTP_200_OK)
+            else:
+                podcasts_user_profile.subscribed_to.remove(podcast)
+                return Response({'status': 'unsubscribed'},
+                                status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

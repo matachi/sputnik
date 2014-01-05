@@ -15,6 +15,7 @@ RUN pip install django feedparser
 RUN pip install dateutils
 # Install django-allauth, issue: https://github.com/pennersr/django-allauth/issues/475
 RUN pip install https://github.com/willhoag/django-allauth/tarball/49ceb777b3917ee5640a5e304698b9ca9cd11887
+RUN pip install djangorestframework
 
 # Comment out a line from /etc/pam.d/sshd to not get `Connection to 127.0.0.1
 # closed. Exit status 254.` when connection to the container over ssh.

@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block script %}
+  <script src="{% static 'js/podcasts/subscribe.js' %}"></script>
+{% endblock %}
 
 {% block content %}
   <div class="page-header">
@@ -6,9 +11,9 @@
   </div>
   {% if user.is_authenticated %}
     {% if subscribed %}
-      <button type="button" class="btn btn-default btn-sm">Unsubscribe</button>
+      <button type="button" class="btn btn-default btn-sm js-subscribe">Unsubscribe</button>
     {% else %}
-      <button type="button" class="btn btn-primary btn-sm">Subscribe</button>
+      <button type="button" class="btn btn-primary btn-sm js-subscribe">Subscribe</button>
     {% endif %}
     <hr>
   {% endif %}
