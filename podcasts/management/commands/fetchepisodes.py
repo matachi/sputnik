@@ -21,11 +21,18 @@ class Command(BaseCommand):
                     # The episode in the feed doesn't have a title
                     continue
                     # parser.parse(): http://stackoverflow.com/a/18726020/595990
+                enclosures = getattr(feed_episode, 'enclosures', '')
+                audio_file = ''
+                for enclosure in enclosures:
+                    if enclosure.type[:5] == 'audio':
+                        audio_file = enclosures[0].href
+                        break
                 episode = Episode(title=feed_episode.title,
                                   link=getattr(feed_episode, 'link', ''),
                                   description=feed_episode.summary,
                                   podcast=podcast,
                                   published=parser.parse(
                                       feed_episode.published),
+                                  audio_file=audio_file,
                 )
                 episode.save()

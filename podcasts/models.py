@@ -24,6 +24,7 @@ class Episode(models.Model):
     description = models.TextField(blank=True)
     podcast = models.ForeignKey(Podcast, related_name='episodes')
     published = models.DateTimeField(blank=True)
+    audio_file = models.URLField(blank=True)
 
     def __str__(self):
         return self.title

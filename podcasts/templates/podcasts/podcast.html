@@ -25,8 +25,8 @@
       <tr>
         <th>#</th>
         <th>Title</th>
-        <th></th>
-        <th>Published</th>
+        <th class="text-right"></th>
+        <th class="text-right">Published</th>
       </tr>
       </thead>
       <tbody>
@@ -34,8 +34,11 @@
         <tr>
           <td>{{ forloop.counter }}</td>
           <td><a href="{% url 'podcasts:episode' podcast=episode.podcast.pk episode=episode.pk %}">{{ episode.title }}</a></td>
-          <td><a href="{{ episode.link }}"><i class="fa fa-globe"></i></a></td>
-          <td>{{ episode.published | date }}</td>
+          <td class="text-right">
+            <a href="{{ episode.link }}"><i class="fa fa-globe fa-fw"></i></a>
+            <a href="{{ episode.audio_file }}" target="_blank" title="Play in a new tab"><i class="fa fa-play fa-fw"></i></a>
+          </td>
+          <td class="text-right">{{ episode.published | date }}</td>
         </tr>
       {% endfor %}
       </tbody>

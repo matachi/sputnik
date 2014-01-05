@@ -11,6 +11,7 @@
         <th></th>
         <th>Podcast</th>
         <th>Episode</th>
+        <th></th>
         <th class="text-right">Published</th>
       </tr>
       </thead>
@@ -24,6 +25,10 @@
             {% endif %}
             <td><a href="{% url 'podcasts:podcast' episode.podcast.pk %}">{{ episode.podcast.title }}</a></td>
             <td><a href="{% url 'podcasts:episode' episode.podcast.pk episode.pk %}">{{ episode.title }}</a></td>
+            <td class="text-right">
+              <a href="{{ episode.link }}"><i class="fa fa-globe fa-fw"></i></a>
+              <a href="{{ episode.audio_file }}" target="_blank" title="Play in a new tab"><i class="fa fa-play fa-fw"></i></a>
+            </td>
             <td class="text-right">{{ episode.published|date }}</td>
           </tr>
         {% endfor %}
