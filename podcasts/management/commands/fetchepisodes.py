@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         for podcast in Podcast.objects.all():
-            episodes = podcast.episode_set
+            episodes = podcast.episodes
             feed = feedparser.parse(podcast.feed)
             for feed_episode in feed.entries:
                 try:
