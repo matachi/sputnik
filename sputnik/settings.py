@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'rest_framework',
 
     'podcasts',
+    'news',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -129,5 +130,6 @@ STATICFILES_DIRS = (
 
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'podcasts/templates'),
+    os.path.join(BASE_DIR, 'news/templates'),
     os.path.join(BASE_DIR, 'sputnik/templates'),
 )

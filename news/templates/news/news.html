@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Featured content and news<br><small>Check back to not miss a chance of discovering new, awesome content</small></h1>
+  </div>
+  {% if object_list %}
+    {% for news_item in object_list %}
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="well">
+            <h2>{{ news_item.title }}</h2>
+            <p><small>Posted by {{ news_item.author.username }} on {{ news_item.published }}</small></p>
+            <p>{{ news_item.content|linebreaks }}</p>
+            {% if news_item.referenced_podcasts or news_item.referenced_episodes %}
+              <table class="table">
+                <tbody>
+                {% for podcast in news_item.referenced_podcasts.all %}
+                  <tr>
+                    <td><span class="label label-primary">Podcast</span></td>
+                    <td><a href="{% url 'podcasts:podcast' podcast.pk %}">{{ podcast.title }}</a></td>
+                    <td></td>
+                  </tr>
+                {% endfor %}
+                {% for episode in news_item.referenced_episodes.all %}
+                  <tr>
+                    <td><span class="label label-success">Episode</span></td>
+                    <td><a href="{% url 'podcasts:podcast' episode.podcast.pk %}">{{ episode.podcast.title }}</a></td>
+                    <td><a href="{% url 'podcasts:episode' episode.podcast.pk episode.pk %}">{{ episode.title }}</a></td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
