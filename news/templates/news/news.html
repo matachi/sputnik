@@ -10,7 +10,7 @@
         <div class="col-sm-12">
           <div class="well">
             <h2>{{ news_item.title }}</h2>
-            <p><small>Posted by {{ news_item.author.username }} on {{ news_item.published }}</small></p>
+            <p><small>Posted by <a href="{% url 'users:profile' news_item.author.username %}">{{ news_item.author.username }}</a> on {{ news_item.published }}</small></p>
             <p>{{ news_item.content|linebreaks }}</p>
             {% if news_item.referenced_podcasts or news_item.referenced_episodes %}
               <table class="table">

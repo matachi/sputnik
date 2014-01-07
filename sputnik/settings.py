@@ -48,6 +48,9 @@ INSTALLED_APPS = (
 
     'rest_framework',
 
+    'widget_tweaks',
+
+    'users',
     'podcasts',
     'news',
 )
@@ -90,6 +93,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+LOGIN_REDIRECT_URL = '/'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -131,5 +136,6 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'podcasts/templates'),
     os.path.join(BASE_DIR, 'news/templates'),
+    os.path.join(BASE_DIR, 'users/templates'),
     os.path.join(BASE_DIR, 'sputnik/templates'),
 )

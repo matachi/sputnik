@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>{{ object.username }}'s profile page</h1>
+  </div>
+  {% if object == user %}
+    <ul class="list-unstyled">
+      <li>
+        <a href="">Customize your profile details</a></p>
+      </li>
+    </ul>
+  {% endif %}
+  {% if personal_profile.website or personal_profile.visible_email or personal_profile.twitter or personal_profile.facebook or personal_profile.github or pesonal_profile.bitbucket %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Links to personal website and social media pages
+      </div>
+        <div class="panel-body">
+          {% if personal_profile.website %}
+            {% include 'users/profile-icon-link.html' with value=personal_profile.website icon='home' %}
+          {% endif %}
+          {% if personal_profile.visible_email %}
+            {% include 'users/profile-icon-link.html' with protocol='mailto:' value=personal_profile.user.email icon='envelope' %}
+          {% endif %}
+          {% if personal_profile.twitter %}
+            {% include 'users/profile-icon-link.html' with protocol='https://twitter.com/' value=personal_profile.twitter icon='twitter' %}
+          {% endif %}
+          {% if personal_profile.facebook %}
+            {% include 'users/profile-icon-link.html' with protocol='https://facebook.com/' value=personal_profile.facebook icon='facebook' %}
+          {% endif %}
+          {% if personal_profile.github %}
+            {% include 'users/profile-icon-link.html' with protocol='https://github.com/' value=personal_profile.github icon='github' %}
+          {% endif %}
+          {% if personal_profile.bitbucket %}
+            {% include 'users/profile-icon-link.html' with protocol='https://bitbucket.com/' value=personal_profile.bitbucket icon='bitbucket' %}
+          {% endif %}
+        </div>
+    </div>
+  {% endif %}
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      Subscribed to the following podcasts
+    </div>
+    <div class="panel-body">
+      {% if object.podcasts_profile.subscribed_to.all %}
+        <ul class="list-unstyled">
+          {% for podcast in object.podcasts_profile.subscribed_to.all %}
+          <li><a href="#">{{ podcast }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>{{ object.username }} hasn't subscribed to any podcasts yet.</p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
