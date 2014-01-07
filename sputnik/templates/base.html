@@ -31,6 +31,7 @@
           <li><a href="{% url 'podcasts:feed' %}"><i class="fa fa-home fa-fw"></i> Feed</a></li>
         {% endif %}
         <li><a href="{% url 'users:community' %}"><i class="fa fa-users fa-fw"></i> Community</a></li>
+        <li><a href="{% url 'about' %}"><i class="fa fa-users fa-fw"></i> About & donate</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
