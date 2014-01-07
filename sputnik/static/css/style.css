@@ -1,3 +1,15 @@
 #content {
   margin-top: 70px;
 }
+
+#sp-footer {
+    border-top: 1px solid #ddd;
+    color: #666;
+    margin-top: 100px;
+    padding-bottom: 30px;
+    padding-top: 40px;
+}
+
+#sp-footer p {
+    margin-bottom: 0;
+}
