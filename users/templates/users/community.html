@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Community</h1>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>User</th>
+        <th>Subscribed to # of podcasts</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for user in object_list %}
+      <tr>
+        <td><a href="{% url 'users:profile' user.username %}">{{ user.username }}</a></td>
+        <td>{{ user.podcasts_profile.subscribed_to.all|length }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

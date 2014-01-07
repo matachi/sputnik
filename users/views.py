@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, ListView
 from users.models import PersonalUserProfile
 
 
@@ -24,3 +24,8 @@ class Settings(UpdateView):
 
     def get_object(self):
         return self.request.user.personal_profile
+
+
+class Community(ListView):
+    model = get_user_model()
+    template_name = 'users/community.html'
