@@ -13,3 +13,7 @@
 #sp-footer p {
     margin-bottom: 0;
 }
+
+.valign-middle td {
+    vertical-align: middle !important;
+}

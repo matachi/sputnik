@@ -1,9 +1,25 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block content %}
   <div class="page-header">
     <h1>Your podcast episode feed<br><small>With the latest from the podcasts you are subscribed to</small></h1>
   </div>
+
+  <div class="modal fade" id="modalPlayer" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Modal title</h4>
+        </div>
+        <div class="modal-body">
+          <audio class="player" controls></audio>
+        </div>
+      </div>
+    </div>
+  </div>
+
   {% if object_list %}
     <table class="table table-striped">
       <thead>
@@ -15,7 +31,7 @@
         <th class="text-right">Published</th>
       </tr>
       </thead>
-      <tbody>
+      <tbody class="valign-middle">
         {% for episode in object_list %}
           <tr>
             {% if forloop.counter|divisibleby:3 %}
@@ -26,8 +42,8 @@
             <td><a href="{% url 'podcasts:podcast' episode.podcast.pk %}">{{ episode.podcast.title }}</a></td>
             <td><a href="{% url 'podcasts:episode' episode.podcast.pk episode.pk %}">{{ episode.title }}</a></td>
             <td class="text-right">
-              {% if episode.link %}<a href="{{ episode.link }}"><i class="fa fa-globe fa-fw"></i></a>{% endif %}
-              {% if episode.audio_file %}<a href="{{ episode.audio_file }}" target="_blank" title="Play in a new tab"><i class="fa fa-play fa-fw"></i></a>{% endif %}
+              {% if episode.link %}<a href="{{ episode.link }}" class="btn btn-primary btn-xs"><i class="fa fa-globe fa-lg fa-fw"></i></a>{% endif %}
+              {% if episode.audio_file %}<button class="btn btn-primary btn-xs js-play" title="Play" data-episode-title="{{ episode.title }}" data-audio-file="{{ episode.audio_file }}"><i class="fa fa-play fa-lg fa-fw"></i></button>{% endif %}
             </td>
             <td class="text-right">{{ episode.published|date }}</td>
           </tr>
@@ -37,4 +53,8 @@
   {% else %}
     <p>There are no new episodes available from the podcasts you are subscribed to. But here is an idea: visit the <a href="{% url 'podcasts:podcasts' %}">podcast library</a> and see if you can find something new to subscribe to.</p>
   {% endif %}
+{% endblock %}
+
+{% block script %}
+  <script src="{% static 'js/podcasts/modal-player.js' %}"></script>
 {% endblock %}
