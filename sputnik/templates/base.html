@@ -33,7 +33,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Podcasts <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="{% url 'podcasts:podcasts' %}">Library</a></li>
-              <li><a href="#">Feed</a></li>
+              <li><a href="{% url 'podcasts:feed' %}">Feed</a></li>
             </ul>
           </li>
         {% else %}
