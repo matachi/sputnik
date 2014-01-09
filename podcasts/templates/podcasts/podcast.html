@@ -3,6 +3,7 @@
 
 {% block script %}
   {% if user.is_authenticated %}
+    <script src="{% static 'js/podcasts/get-cookie.js' %}"></script>
     <script src="{% static 'js/podcasts/subscribe.js' %}"></script>
   {% endif %}
 {% endblock %}

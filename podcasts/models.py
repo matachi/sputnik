@@ -35,6 +35,8 @@ class PodcastUserProfile(models.Model):
                                 related_name='podcasts_profile')
     subscribed_to = models.ManyToManyField(Podcast, related_name='subscribers',
                                            blank=True)
+    listened_to = models.ManyToManyField(Episode, related_name='listeners',
+                                         blank=True)
 
     class Meta():
         verbose_name = 'User\'s Podcasts profile'

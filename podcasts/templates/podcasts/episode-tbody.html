@@ -1,0 +1,5 @@
+<tbody class="valign-middle">
+{% for episode in object_list %}
+  {% include 'podcasts/episode-row.html' with user=user episode=episode %}
+{% endfor %}
+</tbody>
