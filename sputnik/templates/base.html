@@ -26,12 +26,21 @@
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="{% url 'podcasts:podcasts' %}"><i class="fa fa-book fa-fw"></i> Library</a></li>
         {% if user.is_authenticated %}
-          <li><a href="{% url 'podcasts:feed' %}"><i class="fa fa-home fa-fw"></i> Feed</a></li>
+          <li class="hidden-sm"><a href="{% url 'podcasts:podcasts' %}">Library</a></li>
+          <li class="hidden-sm"><a href="{% url 'podcasts:feed' %}">Feed</a></li>
+          <li class="visible-sm dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Podcasts <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'podcasts:podcasts' %}">Library</a></li>
+              <li><a href="#">Feed</a></li>
+            </ul>
+          </li>
+        {% else %}
+          <li><a href="{% url 'podcasts:podcasts' %}">Library</a></li>
         {% endif %}
-        <li><a href="{% url 'users:community' %}"><i class="fa fa-users fa-fw"></i> Community</a></li>
-        <li><a href="{% url 'about' %}"><i class="fa fa-users fa-fw"></i> About & donate</a></li>
+        <li><a href="{% url 'users:community' %}">Community</a></li>
+        <li><a href="{% url 'about' %}">About & donate</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
