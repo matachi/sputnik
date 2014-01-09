@@ -2,13 +2,15 @@ $(function() {
     var $modal = $('#modalPlayer');
     var $modalTitle = $modal.find('.modal-title');
     var player = $modal.find('.player')[0];
+    var timeoutId;
 
     $modal.modal({
         show: false
     });
 
-    $modal.on('hidden.bs.modal', function() {
+    $modal.on('hide.bs.modal', function() {
         player.pause();
+        clearTimeout(timeoutId);
     });
 
     function listenedAjaxRequest(object) {
@@ -43,12 +45,12 @@ $(function() {
             player.setAttribute('src', audioFile);
         }
 
-        setTimeout(function checkIfListened() {
+        timeoutId = setTimeout(function checkIfListened() {
             var listened = player.currentTime / player.duration > 0.5;
             if (listened) {
                 markAsListened(id);
             } else {
-                setTimeout(checkIfListened, 5000);
+                timeoutId = setTimeout(checkIfListened, 5000);
             }
         }, 5000);
 
