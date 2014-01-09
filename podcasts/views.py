@@ -1,11 +1,15 @@
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.views.generic import ListView
+from django.views.generic.list import ListView
+from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
+from email.utils import formatdate
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from lxml import etree
 from podcasts import models
 from podcasts.serializers import SubscribeSerializer, ListenedSerializer
 
@@ -47,6 +51,37 @@ class Feed(ListView):
         return models.Episode.objects.filter(
             podcast=self.request.user.podcasts_profile.subscribed_to.all(),
             published__gte='2013-12-01').order_by('-published')
+
+
+class ExportSubscriptions(TemplateView):
+    template_name = 'podcasts/export-subscriptions.html'
+
+
+class SubscriptionsOpml(View):
+    def get(self, request):
+        root = etree.Element('opml', attrib={'version': '1.0'})
+
+        head = etree.SubElement(root, 'head')
+        title = etree.SubElement(head, 'title')
+        title.text = '{}\'s podcast subscriptions'.format(
+            self.request.user.username)
+        date_created = etree.SubElement(root, 'dateCreated')
+        date_created.text = formatdate()
+
+        body = etree.SubElement(root, 'body')
+        outline_text = etree.SubElement(body, 'outline',
+                                        attrib={'text': 'Podcasts',
+                                                'title': 'Podcasts'})
+        for podcast in request.user.podcasts_profile.subscribed_to.all():
+            etree.SubElement(outline_text, 'outline',
+                             attrib={'type': 'rss', 'title': podcast.title,
+                                     'text': podcast.title,
+                                     'xmlUrl': podcast.feed,
+                                     'htmlUrl': podcast.link})
+        return HttpResponse(
+            etree.tostring(root, encoding='utf-8', xml_declaration=True,
+                           pretty_print=True),
+            content_type='text/xml')
 
 
 class Subscribe(APIView):

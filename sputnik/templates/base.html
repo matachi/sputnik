@@ -49,6 +49,7 @@
             <ul class="dropdown-menu">
               <li><a href="{% url 'users:profile' user.username %}"><i class="fa fa-home fa-fw"></i> Profile</a></li>
               <li><a href="{% url 'users:settings' %}"><i class="fa fa-cogs fa-fw"></i> Settings</a></li>
+              <li><a href="{% url 'podcasts:export-subscriptions' %}"><i class="fa fa-download fa-fw"></i> Export subscriptions</a></li>
               <li class="divider"></li>
               <li><a href="{% url 'account_logout' %}"><i class="fa fa-sign-out fa-fw"></i> Sign out</a></li>
             </ul>
