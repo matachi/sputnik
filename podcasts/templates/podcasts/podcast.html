@@ -34,7 +34,7 @@
       {% for episode in object_list %}
         <tr>
           <td>{{ forloop.counter }}</td>
-          <td><a href="{% url 'podcasts:episode' podcast=episode.podcast.pk episode=episode.pk %}">{{ episode.title }}</a></td>
+          <td><a href="{% url 'podcasts:episode' episode.pk %}">{{ episode.title }}</a></td>
           <td class="text-right">
             {% if episode.link %}<a href="{{ episode.link }}"><i class="fa fa-globe fa-fw"></i></a>{% endif %}
             {% if episode.audio_file %}<a href="{{ episode.audio_file }}" target="_blank" title="Play in a new tab"><i class="fa fa-play fa-fw"></i></a>{% endif %}

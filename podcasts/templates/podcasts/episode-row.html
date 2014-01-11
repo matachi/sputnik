@@ -7,7 +7,7 @@
       <td><span class="label label-success">Unlistened</span></td>
     {% endif %}
     <td><a href="{% url 'podcasts:podcast' episode.podcast.pk %}">{{ episode.podcast.title }}</a></td>
-    <td><a href="{% url 'podcasts:episode' episode.podcast.pk episode.pk %}">{{ episode.title }}</a></td>
+    <td><a href="{% url 'podcasts:episode' episode.pk %}">{{ episode.title }}</a></td>
     <td class="text-right">
       {% if episode.link %}
         <a href="{{ episode.audio_file }}" class="btn btn-primary btn-xs js-open" target="_blank" title="Open media file" data-episode-id="{{ episode.pk }}"><i class="fa fa-external-link fa-lg fa-fw"></i></a>

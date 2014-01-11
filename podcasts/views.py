@@ -128,9 +128,7 @@ class Episode(DetailView):
     template_name = 'podcasts/episode.html'
 
     def get_object(self):
-        podcast = get_object_or_404(models.Podcast, pk=self.kwargs['podcast'])
-        episode = int(self.kwargs['episode']) - 1
-        return models.Episode.objects.filter(podcast=podcast)[episode]
+        return models.Episode.objects.get(pk=self.kwargs['episode'])
 
 
 class Feed(ListView):
