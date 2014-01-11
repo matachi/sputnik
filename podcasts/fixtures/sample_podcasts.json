@@ -14,6 +14,30 @@
     {
         "model": "podcasts.Podcast",
         "fields": {
+            "feed": "http://www.linuxvoice.com/podcast_opus.rss"
+        }
+    },
+    {
+        "model": "podcasts.Podcast",
+        "fields": {
+            "feed": "http://feed.podcast.ubuntu-uk.org/ogg/"
+        }
+    },
+    {
+        "model": "podcasts.Podcast",
+        "fields": {
+            "feed": "http://www.2600.com/oth-broadband.xml"
+        }
+    },
+    {
+        "model": "podcasts.Podcast",
+        "fields": {
+            "feed": "http://overkligt.se/category/podcast/feed"
+        }
+    },
+    {
+        "model": "podcasts.Podcast",
+        "fields": {
             "feed": "http://tackforkaffet.se/category/avsnitt/feed/"
         }
     }
