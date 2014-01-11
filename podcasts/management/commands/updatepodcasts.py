@@ -16,3 +16,5 @@ class Command(BaseCommand):
             podcast.description = feed.subtitle
             podcast.link = feed.link
             podcast.save()
+            if getattr(feed, 'image', False):
+                podcast.download_image(feed.image.href)
