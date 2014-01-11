@@ -9,7 +9,7 @@ RUN apt-get install -y openssh-server
 RUN echo "root:pass" | chpasswd
 RUN mkdir /var/run/sshd
 
-RUN apt-get install -y python3 python3-setuptools sqlite3 python3-lxml
+RUN apt-get install -y python3 python3-setuptools sqlite3 python3-lxml python3-pillow
 RUN easy_install3 pip
 RUN pip install django feedparser
 RUN pip install dateutils
