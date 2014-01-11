@@ -7,7 +7,7 @@
   {% if object == user %}
     <ul class="list-unstyled">
       <li>
-        <a href="">Customize your profile details</a></p>
+        <a href="{% url 'users:settings' %}">Customize your profile details</a></p>
       </li>
     </ul>
   {% endif %}
