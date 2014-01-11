@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.formtools.wizard.views import SessionWizardView
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -52,6 +53,12 @@ class AddPodcast(SessionWizardView):
         podcast = models.Podcast(**cleaned_data)
         podcast.save()
 
+        messages.success(self.request,
+                         '<strong>Success!</strong> The podcast was ' +
+                         'successfully created. Please note that it might ' +
+                         'take a few minutes for the episodes to be fetched. ' +
+                         '<a href="' + reverse('podcasts:add-podcast') +
+                         '" class="alert-link">Add an additional podcast</a>')
         return HttpResponseRedirect(
             reverse('podcasts:podcast', args=(podcast.pk,)))
 

@@ -63,6 +63,15 @@
 </nav>
 
 <div class="container" id="content">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        {{ message|safe }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
   {% block content %}{% endblock %}
 </div>
 
