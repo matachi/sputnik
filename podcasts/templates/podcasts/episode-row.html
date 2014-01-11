@@ -1,17 +1,31 @@
 {% load inside %}
+
 <tr>
   {% with listened=user.podcasts_profile|inside:episode.listeners.all %}
-    {% if listened %}
-      <td><span class="label label-default">Listened</span></td>
-    {% else %}
-      <td><span class="label label-success">Unlistened</span></td>
+    {% if user.is_authenticated %}
+      {% if listened %}
+        <td><span class="label label-default">Listened</span></td>
+      {% else %}
+        <td><span class="label label-success">Unlistened</span></td>
+      {% endif %}
     {% endif %}
-    <td><a href="{% url 'podcasts:podcast' episode.podcast.pk %}">{{ episode.podcast.title }}</a></td>
+
+    {% if show_podcast %}
+      <td><a href="{% url 'podcasts:podcast' episode.podcast.pk %}">{{ episode.podcast.title }}</a></td>
+    {% endif %}
+
     <td><a href="{% url 'podcasts:episode' episode.pk %}">{{ episode.title }}</a></td>
+
     <td class="text-right">
       {% if episode.link %}
-        <a href="{{ episode.audio_file }}" class="btn btn-primary btn-xs js-open" target="_blank" title="Open media file" data-episode-id="{{ episode.pk }}"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
-        <button class="btn btn-primary btn-xs js-play" title="Play" data-episode-id="{{ episode.id }}" data-episode-title="{{ episode.title }}" data-audio-file="{{ episode.audio_file }}"><i class="fa fa-play fa-lg fa-fw"></i></button>
+        {% if user.is_authenticated %}
+          <a href="{{ episode.audio_file }}" class="btn btn-primary btn-xs js-open" target="_blank" title="Open media file" data-episode-id="{{ episode.pk }}"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
+        {% else %}
+          <a href="{{ episode.audio_file }}" class="btn btn-primary btn-xs" target="_blank" title="Open media file"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
+        {% endif %}
+
+        <button class="btn btn-primary btn-xs js-play" title="Play" data-episode-id="{{ episode.id }}" data-episode-title="{{ episode.title }}" data-audio-file="{{ episode.audio_file }}" data-is-authenticated="{{ user.is_authenticated }}"><i class="fa fa-play fa-lg fa-fw"></i></button>
+
         {% if user.is_authenticated %}
           <div class="btn-group">
             <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
@@ -28,6 +42,7 @@
         {% endif %}
       {% endif %}
     </td>
+
     <td class="text-right">{{ episode.published|date }}</td>
   {% endwith %}
 </tr>

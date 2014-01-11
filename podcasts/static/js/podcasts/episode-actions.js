@@ -2,7 +2,7 @@ $(function() {
     var $modal = $('#modalPlayer');
     var $modalTitle = $modal.find('.modal-title');
     var player = $modal.find('.player')[0];
-    var timeoutId;
+    var timeoutId = -1;
 
     $modal.modal({
         show: false
@@ -10,7 +10,10 @@ $(function() {
 
     $modal.on('hide.bs.modal', function() {
         player.pause();
-        clearTimeout(timeoutId);
+        if (timeoutId != -1) {
+            clearTimeout(timeoutId);
+            timeoutId = -1;
+        }
     });
 
     function listenedAjaxRequest(object) {
@@ -39,20 +42,22 @@ $(function() {
         });
     }
 
-    function openModalWindow(id, title, audioFile) {
+    function openModalWindow(id, title, audioFile, authenticated) {
         $modalTitle.html(title);
         if (player.getAttribute('src') !== audioFile) {
             player.setAttribute('src', audioFile);
         }
 
-        timeoutId = setTimeout(function checkIfListened() {
-            var listened = player.currentTime / player.duration > 0.5;
-            if (listened) {
-                markAsListened(id);
-            } else {
-                timeoutId = setTimeout(checkIfListened, 5000);
-            }
-        }, 5000);
+        if (authenticated) {
+            timeoutId = setTimeout(function checkIfListened() {
+                var listened = player.currentTime / player.duration > 0.5;
+                if (listened) {
+                    markAsListened(id);
+                } else {
+                    timeoutId = setTimeout(checkIfListened, 5000);
+                }
+            }, 5000);
+        }
 
         $modal.modal('show');
     }
@@ -62,7 +67,8 @@ $(function() {
         var id = $button.data('episode-id');
         var title = $button.data('episode-title');
         var audioFile = $button.data('audio-file');
-        openModalWindow(id, title, audioFile);
+        var authenticated = $button.data('is-authenticated') === 'True';
+        openModalWindow(id, title, audioFile, authenticated);
     });
 
     $('.js-open').click(function(event) {

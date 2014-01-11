@@ -1,0 +1,20 @@
+{% include 'podcasts/modal-player.html' %}
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      {% if user.is_authenticated %}<th></th>{% endif %}
+      {% if show_podcast %}<th>Podcast</th>{% endif %}
+      <th>Episode</th>
+      <th></th>
+      <th class="text-right">Published</th>
+    </tr>
+    </thead>
+    <tbody class="valign-middle">
+    {% for episode in episodes %}
+      {% include 'podcasts/episode-row.html' with user=user episode=episode show_podcast=show_podcast %}
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

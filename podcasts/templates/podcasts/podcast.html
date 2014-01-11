@@ -2,8 +2,9 @@
 {% load staticfiles %}
 
 {% block script %}
+  <script src="{% static 'js/podcasts/get-cookie.js' %}"></script>
+  <script src="{% static 'js/podcasts/episode-actions.js' %}"></script>
   {% if user.is_authenticated %}
-    <script src="{% static 'js/podcasts/get-cookie.js' %}"></script>
     <script src="{% static 'js/podcasts/subscribe.js' %}"></script>
   {% endif %}
 {% endblock %}
@@ -12,6 +13,7 @@
   <div class="page-header">
     <h1>{{ podcast.title }}{% if podcast.description != "" %} <small>{{ podcast.description }}</small>{% endif %}</h1>
   </div>
+
   {% if user.is_authenticated %}
     {% if subscribed %}
       <button type="button" class="btn btn-default btn-sm js-subscribe">Unsubscribe</button>
@@ -20,29 +22,7 @@
     {% endif %}
     <hr>
   {% endif %}
-  <div class="table-responsive">
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>#</th>
-        <th>Title</th>
-        <th class="text-right"></th>
-        <th class="text-right">Published</th>
-      </tr>
-      </thead>
-      <tbody>
-      {% for episode in object_list %}
-        <tr>
-          <td>{{ forloop.counter }}</td>
-          <td><a href="{% url 'podcasts:episode' episode.pk %}">{{ episode.title }}</a></td>
-          <td class="text-right">
-            {% if episode.link %}<a href="{{ episode.link }}"><i class="fa fa-globe fa-fw"></i></a>{% endif %}
-            {% if episode.audio_file %}<a href="{{ episode.audio_file }}" target="_blank" title="Play in a new tab"><i class="fa fa-play fa-fw"></i></a>{% endif %}
-          </td>
-          <td class="text-right">{{ episode.published | date }}</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
+
+  {% include 'podcasts/episode-table.html' with user=user episodes=object_list show_podcast=False %}
+
 {% endblock %}
