@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
     @staticmethod
     def get_link(episode):
-        getattr(episode, 'link', ''),
+        return getattr(episode, 'link', ''),
 
     @staticmethod
     def get_published(episode):
