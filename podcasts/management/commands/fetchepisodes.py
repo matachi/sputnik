@@ -16,23 +16,44 @@ class Command(BaseCommand):
                     if len(episodes.filter(podcast=podcast).filter(
                             title=feed_episode.title)):
                         # If the episode already is in the DB
-                        continue
+                        # break and don't check any more episodes in this feed
+                        break
                 except AttributeError:
                     # The episode in the feed doesn't have a title
                     continue
-                    # parser.parse(): http://stackoverflow.com/a/18726020/595990
-                enclosures = getattr(feed_episode, 'enclosures', '')
-                audio_file = ''
-                for enclosure in enclosures:
-                    if enclosure.type[:5] == 'audio':
-                        audio_file = enclosures[0].href
-                        break
-                episode = Episode(title=feed_episode.title,
-                                  link=getattr(feed_episode, 'link', ''),
-                                  description=feed_episode.summary,
-                                  podcast=podcast,
-                                  published=parser.parse(
-                                      feed_episode.published),
-                                  audio_file=audio_file,
+                episode = Episode(
+                    podcast=podcast,
+                    title=feed_episode.title,
+                    link=self.get_link(feed_episode),
+                    description=self.get_description(feed_episode),
+                    published=self.get_published(feed_episode),
+                    audio_file=self.get_audio_file(feed_episode),
                 )
                 episode.save()
+
+    @staticmethod
+    def get_link(episode):
+        getattr(episode, 'link', ''),
+
+    @staticmethod
+    def get_published(episode):
+        # parser.parse(): http://stackoverflow.com/a/18726020/595990
+        return parser.parse(episode.published)
+
+    @staticmethod
+    def get_audio_file(episode):
+        enclosures = getattr(episode, 'enclosures', '')
+        for enclosure in enclosures:
+            if enclosure.type[:5] == 'audio':
+                return enclosures[0].href
+        return ''
+
+    @staticmethod
+    def get_description(episode):
+        summary = getattr(episode, 'summary', None)
+        if summary:
+            return summary
+        content = getattr(episode, 'content', None)
+        if content:
+            return content[0].value
+        return ''
