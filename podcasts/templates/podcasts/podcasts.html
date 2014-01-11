@@ -5,20 +5,33 @@
     <h1>Podcast library</h1>
   </div>
   <p>Not finding what you are looking for? Click <a href="{% url 'podcasts:add-podcast' %}">here</a> and instantly add the podcast feed to the site by yourself.</p>
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th>Title</th>
-    </tr>
-    </thead>
-    <tbody>
+  <hr>
+  <div class="row">
     {% for podcast in object_list %}
-      <tr>
-        <td>
-          <a href="{% url 'podcasts:podcast' podcast.pk %}">{{ podcast.title }} {{ podcast.link }}</a>
-        </td>
-      </tr>
+      <div class="col-xs-12 col-sm-4">
+        <div class="thumbnail">
+          <a href="{% url 'podcasts:podcast' podcast.pk %}">
+          {% if podcast.image %}
+            <img src="{{ podcast.image.url }}" alt="">
+          {% else %}
+            <img src="{{ MEDIA_URL }}/podcasts/not-found.jpg" alt="">
+          {% endif %}
+          </a>
+          <div class="caption">
+            <a href="{% url 'podcasts:podcast' podcast.pk %}">
+              <h4><strong>{{ podcast.title }}</strong></h4>
+            </a>
+            <p>{{ podcast.description }}</p>
+          </div>
+        </div>
+      </div>
+      {% if forloop.last %}
+        </div>
+      {% else %}
+        {% if forloop.counter|divisibleby:"3" %}
+          </div><div class="row">
+        {% endif %}
+      {% endif %}
     {% endfor %}
-    </tbody>
-  </table>
+
 {% endblock %}

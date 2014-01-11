@@ -139,3 +139,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'users/templates'),
     os.path.join(BASE_DIR, 'sputnik/templates'),
 )
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
