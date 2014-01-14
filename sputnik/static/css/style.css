@@ -17,3 +17,8 @@
 .valign-middle td {
     vertical-align: middle !important;
 }
+
+#id_models {
+    list-style: none;
+    padding: 0;
+}

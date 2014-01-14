@@ -17,6 +17,7 @@ RUN pip install dateutils
 RUN pip install https://github.com/willhoag/django-allauth/tarball/49ceb777b3917ee5640a5e304698b9ca9cd11887
 RUN pip install djangorestframework
 RUN pip install django-widget-tweaks
+RUN pip install django-haystack Whoosh
 
 # Comment out a line from /etc/pam.d/sshd to not get `Connection to 127.0.0.1
 # closed. Exit status 254.` when connection to the container over ssh.

@@ -2,6 +2,7 @@ from PIL import Image
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files import File
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -19,6 +20,12 @@ class Podcast(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('podcasts:podcast', args=[self.id])
+
+    def image_or_not_found(self):
+        return self.image.url if self.image else '{}podcasts/not-found.jpg'.format(settings.MEDIA_URL)
 
     def title_or_unnamed(self):
         return self.title if self.title else 'unnamed'
@@ -51,6 +58,9 @@ class Episode(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('podcasts:episode', args=[self.id])
 
 
 class PodcastUserProfile(models.Model):

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>Search</h1>
+  </div>
+
+  <form method="get" action="." class="form-horizontal">
+    {% csrf_token %}
+    <fieldset>
+      {{ form.non_field_errors }}
+      {% for field in form %}
+        <div class="form-group{% if field.errors %} has-error{% endif %}">
+          <label for="id_{{ field.name }}" class="col-sm-2 control-label">{{ field.label }}</label>
+          <div class="col-sm-5">
+            {% if field.name != 'models' %}
+              {{ field|add_class:'form-control' }}
+            {% else %}
+              {{ field }}
+            {% endif %}
+          </div>
+          {% if field.errors %}
+            <div id="{{ field.name}}_errors" class="col-sm-5 help-block">
+              {% for error in field.errors %}
+                <i class="fa fa-exclamation fa-fw"></i> {{ error }}{% if not forloop.last %}<br>{% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+          <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+
+  {% if query %}
+    <div class="page-header">
+      <h1>Results</h1>
+    </div>
+
+    <ul class="media-list">
+    {% for result in page.object_list %}
+      <li class="media">
+        {% with object=result.object %}
+          {% if result.content_type == 'podcasts.podcast' %}
+            {% include 'search/includes/podcasts/podcast.html' %}
+          {% elif result.content_type == 'podcasts.episode' %}
+            {% include 'search/includes/podcasts/episode.html' %}
+          {% else %}
+            <div class="media-body">
+              <a href="{{ result.object.get_absolute_url }}">{{ result.object.title }}</a>
+              {{ result.object.description|safe|truncatechars:100 }}
+            </div>
+          {% endif %}
+        {% endwith %}
+      </li>
+    {% empty %}
+      <p>No results found.</p>
+    {% endfor %}
+    </ul>
+
+    {% if page.has_previous or page.has_next %}
+      <ul class="pager">
+        {% if page.has_previous %}
+          <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}"><strong>&laquo; Previous</strong></a>
+        {% else %}
+          <li class="disabled"><strong>&laquo; Previous</strong></li>
+        {% endif %}
+
+        {% if page.has_next %}
+          <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}"><strong>Next &raquo;</strong></a></li>
+        {% else %}
+          <li class="disabled"><strong>Next &raquo;</strong></li>
+        {% endif %}
+      </ul>
+    {% endif %}
+  {% else %}
+      {# Show some example queries to run, maybe query syntax, something else? #}
+  {% endif %}
+{% endblock %}

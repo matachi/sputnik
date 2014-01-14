@@ -11,10 +11,10 @@
     {% endif %}
 
     {% if show_podcast %}
-      <td><a href="{% url 'podcasts:podcast' episode.podcast.pk %}">{{ episode.podcast.title }}</a></td>
+      <td><a href="{{ episode.podcast.get_absolute_url }}">{{ episode.podcast.title }}</a></td>
     {% endif %}
 
-    <td><a href="{% url 'podcasts:episode' episode.pk %}">{{ episode.title }}</a></td>
+    <td><a href="{{ episode.get_absolute_url }}">{{ episode.title }}</a></td>
 
     <td class="text-right">
       {% if episode.link %}

@@ -18,7 +18,7 @@
           {% endif %}
           </a>
           <div class="caption">
-            <a href="{% url 'podcasts:podcast' podcast.pk %}">
+            <a href="{{ podcast.get_absolute_url }}">
               <h4><strong>{{ podcast.title }}</strong></h4>
             </a>
             <p>{{ podcast.description }}</p>

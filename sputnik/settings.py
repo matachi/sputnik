@@ -48,6 +48,8 @@ INSTALLED_APPS = (
 
     'rest_framework',
 
+    'haystack',
+
     'widget_tweaks',
 
     'users',
@@ -94,6 +96,13 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_REDIRECT_URL = '/'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
 
 
 # Database

@@ -1,0 +1,10 @@
+<a class="pull-left" href="{{ object.get_absolute_url }}">
+  <img src="{{ object.podcast.image_or_not_found }}" style="width: 64px; height: 64px;">
+</a>
+<div class="media-body">
+  <a href="{{ object.get_absolute_url }}"><h4 class="media-heading">{{ object.title }}</h4></a>
+  <p>
+    <span class="label label-default pull-right">Episode</span>
+    {{ object.description|striptags|safe|truncatechars:200 }}
+  </p>
+</div>
