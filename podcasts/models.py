@@ -9,6 +9,14 @@ from django.dispatch import receiver
 import io
 from tempfile import NamedTemporaryFile
 from urllib.request import urlopen
+from misc.languages import get_language
+
+
+class Tag(models.Model):
+    title = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.title
 
 
 class Podcast(models.Model):
@@ -17,12 +25,17 @@ class Podcast(models.Model):
     feed = models.URLField()
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='podcasts')
+    language = models.CharField(max_length=2, blank=True)
+    tags = models.ManyToManyField(Tag, related_name='podcasts', blank=True)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
         return reverse('podcasts:podcast', args=[self.id])
+
+    def get_language(self):
+        return get_language(self.language)
 
     def image_or_not_found(self):
         return self.image.url if self.image else '{}podcasts/not-found.jpg'.format(settings.MEDIA_URL)

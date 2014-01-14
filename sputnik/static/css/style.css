@@ -22,3 +22,16 @@
     list-style: none;
     padding: 0;
 }
+
+.podcast-info {
+    margin-bottom: 20px;
+}
+
+.podcast-info .podcast-image {
+    width: 100%;
+    margin-top: 40px;
+}
+
+.podcast-info .podcast-buttons {
+    margin-top: 20px;
+}
