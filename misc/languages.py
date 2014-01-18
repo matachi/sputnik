@@ -210,4 +210,4 @@ languages = {
 
 
 def get_language(language_code):
-    return languages[language_code]
+    return languages.get(language_code)
