@@ -6,32 +6,57 @@
   </div>
   <p>Not finding what you are looking for? Click <a href="{% url 'podcasts:add-podcast' %}">here</a> and instantly add the podcast feed to the site by yourself.</p>
   <hr>
+
   <div class="row">
-    {% for podcast in object_list %}
-      <div class="col-xs-12 col-sm-4">
-        <div class="thumbnail">
-          <a href="{% url 'podcasts:podcast' podcast.pk %}">
-          {% if podcast.image %}
-            <img src="{{ podcast.image.url }}" alt="">
+    <div class="col-sm-3">
+      <ul class="nav nav-stacked">
+        {% for parent, children in categories.items %}
+          {% if children %}
+            <li class="dropdown">
+              <a data-toggle="dropdown" href="#">{{ parent.title }} <i class="caret"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'podcasts:category' parent.id %}">{{ parent.title }}</a></li>
+                <li class="dropdown-header">Subcategories</li>
+                {% for child in children %}
+                  <li><a href="{% url 'podcasts:category' child.id %}">{{ child.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
           {% else %}
-            <img src="{{ MEDIA_URL }}/podcasts/not-found.jpg" alt="">
+            <li><a href="{% url 'podcasts:category' parent.id %}">{{ parent.title }}</a></li>
           {% endif %}
-          </a>
-          <div class="caption">
-            <a href="{{ podcast.get_absolute_url }}">
-              <h4><strong>{{ podcast.title }}</strong></h4>
-            </a>
-            <p>{{ podcast.description }}</p>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-sm-9">
+      <div class="row">
+        {% for podcast in object_list %}
+          <div class="col-xs-12 col-sm-4">
+            <div class="thumbnail">
+              <a href="{% url 'podcasts:podcast' podcast.pk %}">
+              {% if podcast.image %}
+                <img src="{{ podcast.image.url }}" alt="">
+              {% else %}
+                <img src="{{ MEDIA_URL }}/podcasts/not-found.jpg" alt="">
+              {% endif %}
+              </a>
+              <div class="caption">
+                <a href="{{ podcast.get_absolute_url }}">
+                  <h4><strong>{{ podcast.title }}</strong></h4>
+                </a>
+                <p>{{ podcast.description }}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      {% if forloop.last %}
-        </div>
-      {% else %}
-        {% if forloop.counter|divisibleby:"3" %}
-          </div><div class="row">
-        {% endif %}
-      {% endif %}
-    {% endfor %}
+          {% if forloop.last %}
+            </div>
+          {% else %}
+            {% if forloop.counter|divisibleby:"3" %}
+              </div><div class="row">
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+    </div>
+  </div>
 
 {% endblock %}

@@ -1,7 +1,9 @@
 from django.core.management import BaseCommand
 import feedparser
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
 import podcasts
-from podcasts.models import Podcast, Tag
+from podcasts.models import Podcast, Tag, Category
 
 
 class Command(BaseCommand):
@@ -9,22 +11,47 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         for podcast in Podcast.objects.all():
-            if len(podcast.title):
-                # If the podcast already has information
-                continue
-            feed = feedparser.parse(podcast.feed).feed
+            feed_xml = urlopen(podcast.feed).read()
+
+            feed = feedparser.parse(feed_xml).feed
             podcast.title = feed.title
             podcast.description = feed.subtitle
             podcast.link = feed.link
             podcast.language = self.get_language(feed)
             podcast.save()
-            self.set_tags(podcast, self.get_tags(feed))
+            Command.set_tags(podcast, self.get_tags(feed))
             if getattr(feed, 'image', False):
                 podcast.download_image(feed.image.href)
+
+            soup = BeautifulSoup(feed_xml)
+            self.set_categories(podcast, soup)
 
     @staticmethod
     def get_language(feed):
         return feed.language[:2]
+
+    @staticmethod
+    def get_category(title):
+        try:
+            category = Category.objects.get(title=title)
+        except Category.DoesNotExist:
+            category = Category(title=title)
+            category.save()
+        return category
+
+    @staticmethod
+    def set_categories(podcast, soup):
+        for each in soup.find_all('itunes:category'):
+            category_title = each['text']
+            category = Command.get_category(category_title)
+            podcast.categories.add(category)
+            for each in each.find_all('itunes:category'):
+                sub_category_title = each['text']
+                sub_category = Command.get_category(sub_category_title)
+                if not sub_category.parent_category:
+                    sub_category.parent_category = category
+                    sub_category.save()
+                podcast.categories.add(sub_category)
 
     @staticmethod
     def get_tags(feed):

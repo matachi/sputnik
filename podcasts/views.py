@@ -16,12 +16,34 @@ from rest_framework.views import APIView
 from lxml import etree
 from podcasts import models
 from podcasts.forms import AddPodcastForm2, AddPodcastForm1
+from podcasts.models import Tag, Category
 from podcasts.serializers import SubscribeSerializer, ListenedSerializer
 
 
 class Podcasts(ListView):
-    model = models.Podcast
     template_name = 'podcasts/podcasts.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        categories = Category.objects.all()
+        context['categories'] = {}
+        for category in categories:
+            if not category.parent_category:
+                if not context['categories'].get(category):
+                    context['categories'][category] = []
+                continue
+            parent = context['categories'].get(category.parent_category)
+            if parent:
+                parent.append(category)
+            else:
+                context['categories'][category.parent_category] = [category]
+        return context
+
+    def get_queryset(self):
+        if len(self.args):
+            return models.Podcast.objects.filter(categories=self.args[0])
+        else:
+            return models.Podcast.objects.all()
 
 
 class Podcast(ListView):

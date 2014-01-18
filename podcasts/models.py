@@ -19,6 +19,18 @@ class Tag(models.Model):
         return self.title
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=30)
+    parent_category = models.ForeignKey('self', related_name='child_category',
+                                        blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('podcasts:category', args=[self.id])
+
+
 class Podcast(models.Model):
     title = models.CharField(max_length=100, blank=True)
     link = models.URLField(blank=True)
@@ -27,6 +39,8 @@ class Podcast(models.Model):
     image = models.ImageField(upload_to='podcasts')
     language = models.CharField(max_length=2, blank=True)
     tags = models.ManyToManyField(Tag, related_name='podcasts', blank=True)
+    categories = models.ManyToManyField(Category, related_name='podcasts',
+                                        blank=True)
 
     def __str__(self):
         return self.title
@@ -35,7 +49,7 @@ class Podcast(models.Model):
         return reverse('podcasts:podcast', args=[self.id])
 
     def get_language(self):
-        return get_language(self.language)
+        return get_language(self.language) or 'Not specified'
 
     def image_or_not_found(self):
         return self.image.url if self.image else '{}podcasts/not-found.jpg'.format(settings.MEDIA_URL)
