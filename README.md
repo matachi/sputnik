@@ -53,3 +53,4 @@ Note that Fabric is only supported under Python 2.7. Then run:
   etc.
 * `update_podcasts` will run `python3 manager.py updatepodcasts` in the
   container.
+* `rebuild_index` will rebuild the search index.

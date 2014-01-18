@@ -16,3 +16,11 @@ def setup_dev():
         run('python3 manage.py loaddata sample_podcasts')
         update_podcasts()
         run('python3 manage.py fetchepisodes')
+        run('python3 manage.py update_index')
+
+
+def rebuild_index():
+    with cd('"{}"'.format(os.path.dirname(__file__))):
+        # Add --noinput flag because of this issue:
+        # https://github.com/toastdriven/django-haystack/issues/902
+        run('python3 manage.py rebuild_index --noinput')
