@@ -34,3 +34,22 @@ the following settings:
     PyCharm helpers path: /root/.pycharm_helpers
 
 And before starting a *Django server*, configure the host IP to `0.0.0.0:8000`.
+
+## Load development data
+
+To automatically setup the development area in the Docker container with sample
+podcasts etc you can run the fabfile, which will execute the necessary
+commands. First you need to have Fabric installed:
+
+    sudo apt-get install fabric
+
+Note that Fabric is only supported under Python 2.7. Then run:
+
+    fab setup_dev
+
+## Fabric commands
+
+* `setup_dev` will load sample podcasts, update the podcasts, fetch episodes
+  etc.
+* `update_podcasts` will run `python3 manager.py updatepodcasts` in the
+  container.
