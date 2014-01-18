@@ -1,5 +1,5 @@
 from django.contrib import admin
-from podcasts.models import Podcast, Episode, PodcastUserProfile
+from podcasts.models import Podcast, Episode, PodcastUserProfile, Tag, Category
 
 
 class EpisodeInline(admin.StackedInline):
@@ -26,3 +26,15 @@ class PodcastUserProfileAdmin(admin.ModelAdmin):
     pass
 
 admin.site.register(PodcastUserProfile, PodcastUserProfileAdmin)
+
+
+class TagAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Tag, TagAdmin)
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Category, CategoryAdmin)
