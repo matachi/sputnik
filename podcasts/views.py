@@ -27,6 +27,8 @@ class Podcasts(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if len(self.args):
+            context['category'] = Category.objects.get(id=self.args[0])
         categories = Category.objects.all()
         context['categories'] = {}
         for category in categories:
