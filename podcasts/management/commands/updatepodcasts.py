@@ -11,10 +11,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         for podcast in Podcast.objects.all():
-            feed_xml = urlopen(podcast.feed).read()
+            feed_xml = urlopen(podcast.metadata_feed or podcast.feed).read()
 
             feed = feedparser.parse(feed_xml).feed
-            podcast.title = feed.title
+            podcast.title = podcast.title if podcast.title_lock else feed.title
             podcast.description = feed.subtitle
             podcast.link = feed.link
             podcast.language = self.get_language(feed)

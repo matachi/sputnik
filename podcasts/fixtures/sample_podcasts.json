@@ -8,7 +8,10 @@
     {
         "model": "podcasts.Podcast",
         "fields": {
-            "feed": "http://www.jupiterbroadcasting.com/feeds/coderradioogg.xml"
+            "feed": "http://www.jupiterbroadcasting.com/feeds/coderradioogg.xml",
+            "metadata_feed": "http://feeds.feedburner.com/coderradiomp3",
+            "title": "Coder Radio",
+            "title_lock": true
         }
     },
     {
@@ -20,13 +23,17 @@
     {
         "model": "podcasts.Podcast",
         "fields": {
-            "feed": "http://feed.podcast.ubuntu-uk.org/ogg/"
+            "feed": "http://feed.podcast.ubuntu-uk.org/ogg/",
+            "title": "Ubuntu Podcast",
+            "title_lock": true
         }
     },
     {
         "model": "podcasts.Podcast",
         "fields": {
-            "feed": "http://www.2600.com/oth-broadband.xml"
+            "feed": "http://www.2600.com/oth-broadband.xml",
+            "title": "Off The Hook",
+            "title_lock": true
         }
     },
     {
@@ -38,7 +45,9 @@
     {
         "model": "podcasts.Podcast",
         "fields": {
-            "feed": "http://tackforkaffet.se/category/avsnitt/feed/"
+            "feed": "http://tackforkaffet.se/category/avsnitt/feed/",
+            "title": "Tack För Kaffet Podcast",
+            "title_lock": true
         }
     }
 ]

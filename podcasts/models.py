@@ -37,12 +37,14 @@ class Podcast(models.Model):
     title = models.CharField(max_length=100, blank=True)
     link = models.URLField(blank=True)
     feed = models.URLField()
+    metadata_feed = models.URLField(blank=True)
     description = models.TextField(blank=True)
     image = models.ImageField(upload_to='podcasts')
     language = models.CharField(max_length=2, blank=True)
     tags = models.ManyToManyField(Tag, related_name='podcasts', blank=True)
     categories = models.ManyToManyField(Category, related_name='podcasts',
                                         blank=True)
+    title_lock = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
