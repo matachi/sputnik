@@ -1,8 +1,10 @@
+import datetime
 from django.contrib import messages
 from django.contrib.formtools.wizard.views import SessionWizardView
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.views.generic.list import ListView
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
@@ -156,9 +158,15 @@ class Feed(ListView):
     template_name = 'podcasts/feed.html'
 
     def get_queryset(self):
+        now = timezone.now()
+        min_date = now - datetime.timedelta(days=30,
+                                            hours=now.hour,
+                                            minutes=now.minute,
+                                            seconds=now.second,
+                                            microseconds=now.microsecond)
         return models.Episode.objects.filter(
             podcast=self.request.user.podcasts_profile.subscribed_to.all(),
-            published__gte='2013-12-01').order_by('-published')
+            published__gte=min_date).order_by('-published')
 
 
 class ExportSubscriptions(TemplateView):

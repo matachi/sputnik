@@ -95,6 +95,7 @@ class Episode(models.Model):
         if not self.description:
             # If the description is empty, just return an empty string
             return ''
+        # Cleaner documentation: http://lxml.de/lxmlhtml.html#cleaning-up-html
         cleaner = Cleaner(links=False, page_structure=True,
                           remove_tags=['body'])
         try:

@@ -1,0 +1,53 @@
+[
+    {
+        "model": "auth.user",
+        "pk": 1,
+        "fields": {
+            "username": "Olivia",
+            "password": "Dunham"
+        }
+    },
+    {
+        "model": "podcasts.podcast",
+        "pk": 1,
+        "fields": {
+            "title": "Podcast",
+            "feed": "http://www.example.com/feed.xml"
+        }
+    },
+    {
+        "model": "podcasts.episode",
+        "pk": 1,
+        "fields": {
+            "title": "#1",
+            "podcast": 1,
+            "published": "2014-01-01T10:00:00+00:00"
+        }
+    },
+    {
+        "model": "podcasts.episode",
+        "pk": 2,
+        "fields": {
+            "title": "#2",
+            "podcast": 1,
+            "published": "2014-01-02T10:00:00+00:00"
+        }
+    },
+    {
+        "model": "podcasts.episode",
+        "pk": 3,
+        "fields": {
+            "title": "#3",
+            "podcast": 1,
+            "published": "2014-01-03T10:00:00+00:00"
+        }
+    },
+    {
+        "model": "podcasts.podcastuserprofile",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "subscribed_to": [1]
+        }
+    }
+]
