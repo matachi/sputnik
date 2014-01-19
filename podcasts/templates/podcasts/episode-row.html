@@ -18,27 +18,10 @@
 
     <td class="text-right">
       {% if episode.link %}
+        {% include 'podcasts/includes/button-open.html' with show_text=False %}
+        {% include 'podcasts/includes/button-play.html' with show_text=False %}
         {% if user.is_authenticated %}
-          <a href="{{ episode.audio_file }}" class="btn btn-primary btn-xs js-open" target="_blank" title="Open media file" data-episode-id="{{ episode.pk }}"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
-        {% else %}
-          <a href="{{ episode.audio_file }}" class="btn btn-primary btn-xs" target="_blank" title="Open media file"><i class="fa fa-external-link fa-lg fa-fw"></i></a>
-        {% endif %}
-
-        <button class="btn btn-primary btn-xs js-play" title="Play" data-episode-id="{{ episode.id }}" data-episode-title="{{ episode.title }}" data-audio-file="{{ episode.audio_file }}" data-is-authenticated="{{ user.is_authenticated }}"><i class="fa fa-play fa-lg fa-fw"></i></button>
-
-        {% if user.is_authenticated %}
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-cogs fa-lg fa-fw"></i> <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu pull-left" role="menu">
-              {% if listened %}
-                <li><a class="js-remove-listened-mark" data-episode-id="{{ episode.id }}">Mark as unlistened</a></li>
-              {% else %}
-                <li><a class="js-mark-as-listened" data-episode-id="{{ episode.id }}">Mark as listened</a></li>
-              {% endif %}
-            </ul>
-          </div>
+          {% include 'podcasts/includes/button-options.html' with show_text=False %}
         {% endif %}
       {% endif %}
     </td>

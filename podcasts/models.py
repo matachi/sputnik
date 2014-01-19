@@ -7,6 +7,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import io
+import lxml
+from lxml.html.clean import Cleaner
 from tempfile import NamedTemporaryFile
 from urllib.request import urlopen
 from misc.languages import get_language
@@ -88,6 +90,24 @@ class Episode(models.Model):
 
     def get_absolute_url(self):
         return reverse('podcasts:episode', args=[self.id])
+
+    def cleaned_description(self):
+        if not self.description:
+            # If the description is empty, just return an empty string
+            return ''
+        cleaner = Cleaner(links=False, page_structure=True,
+                          remove_tags=['body'])
+        try:
+            # Try to return a cleaned description
+            cleaned = cleaner.clean_html(self.description)
+            return cleaned
+        except lxml.etree.ParserError as e:
+            # Exception will be thrown if the description, for example, is just
+            # some whitespaces
+            if e.args[0] == 'Document is empty':
+                return ''
+            else:
+                raise e
 
 
 class PodcastUserProfile(models.Model):

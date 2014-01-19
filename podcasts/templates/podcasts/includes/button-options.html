@@ -1,0 +1,12 @@
+<div class="btn-group">
+  <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+    <i class="fa fa-cogs fa-lg fa-fw"></i>{% if show_text %} Options {% endif %}<span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu pull-left" role="menu">
+    {% if listened %}
+      <li><a class="js-remove-listened-mark" data-episode-id="{{ episode.id }}">Mark as unlistened</a></li>
+    {% else %}
+      <li><a class="js-mark-as-listened" data-episode-id="{{ episode.id }}">Mark as listened</a></li>
+    {% endif %}
+  </ul>
+</div>

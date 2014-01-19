@@ -1,23 +1,85 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
+{% load inside %}
+
+{% block script %}
+  <script src="{% static 'js/podcasts/get-cookie.js' %}"></script>
+  <script src="{% static 'js/podcasts/episode-actions.js' %}"></script>
+{% endblock %}
 
 {% block content %}
-  <h2>{{ episode.podcast.title }}</h2>
-  <table class="table table-bordered">
-    <tr>
-      <td>Title</td>
-      <td>{{ object.title }}</td>
-    </tr>
-    <tr>
-      <td>Link</td>
-      <td>{{ object.link|urlize }}</td>
-    </tr>
-    <tr>
-      <td>Description</td>
-      <td>{{ object.description|safe }}</td>
-    </tr>
-    <tr>
-      <td>Published</td>
-      <td>{{ object.published|date }}</td>
-    </tr>
-  </table>
+  {% include 'podcasts/modal-player.html' %}
+
+  <div class="row podcast-info">
+    <div class="col-sm-3">
+      <img src="{{ episode.podcast.image_or_not_found }}" class="podcast-image">
+    </div>
+    <div class="col-sm-9">
+      <div class="page-header">
+        <h1>Episode "{{ episode.title }}"<br><small>From the podcast <a href="{{ episode.podcast.get_absolute_url }}">{{ episode.podcast.title }}</a></small></h1>
+      </div>
+      <div class="row">
+        <div class="col-xs-2">
+          Published:
+        </div>
+        <div class="col-xs-10">
+          {{ episode.published|date }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-2">
+          Episode link:
+        </div>
+        <div class="col-xs-10">
+          {{ episode.link|urlize }}
+        </div>
+      </div>
+      {% if user.is_authenticated %}
+        <div class="row">
+          <div class="col-xs-2">
+            Status:
+          </div>
+          <div class="col-xs-10">
+            {% with listened=user.podcasts_profile|inside:episode.listeners.all %}
+              {% if user.is_authenticated %}
+                {% if listened %}
+                  <span class="label label-default">Listened</span>
+                {% else %}
+                  <span class="label label-success">Unlistened</span>
+                {% endif %}
+              {% endif %}
+            {% endwith %}
+          </div>
+        </div>
+      {% endif %}
+      <div class="row media-controller">
+        <div class="col-xs-12">
+          {% include 'podcasts/includes/button-open.html' with show_text=True %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 media-controller">
+          {% include 'podcasts/includes/button-play.html' with show_text=True %}
+        </div>
+      </div>
+      {% if user.is_authenticated %}
+        {% with listened=user.podcasts_profile|inside:episode.listeners.all %}
+          <div class="row">
+            <div class="col-xs-12 media-controller">
+              {% include 'podcasts/includes/button-options.html' with show_text=True %}
+            </div>
+          </div>
+        {% endwith %}
+      {% endif %}
+    </div>
+  </div>
+
+  {% with episode.cleaned_description|safe as description %}
+    {% if description %}
+      <h2>Description</h2>
+      <p>
+        {{ description }}
+      </p>
+    {% endif %}
+  {% endwith %}
 {% endblock %}
