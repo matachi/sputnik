@@ -12,6 +12,7 @@ from lxml.html.clean import Cleaner
 from tempfile import NamedTemporaryFile
 from urllib.request import urlopen
 from misc.languages import get_language
+from podcasts.feed_tools import get_podcast_data
 
 
 class Tag(models.Model):
@@ -77,6 +78,55 @@ class Podcast(models.Model):
         self.image.save('{}.jpg'.format(self.pk), File(image_tmp))
         # Close and delete the temp image
         image_tmp.close()
+
+    def update(self, podcast_data=None):
+        if not podcast_data:
+            # If the method is called without a `podcast_data`
+            podcast_data = get_podcast_data(self.metadata_feed or self.feed)
+            if not podcast_data:
+                # If it wasn't possible to get data, i.e. the page is down
+                return
+        self.title = self.title if self.title_lock else podcast_data['title']
+        self.description = podcast_data['description']
+        self.link = podcast_data['link']
+        self.language = podcast_data['language']
+        self.save()
+        self.__set_tags(podcast_data['tags'])
+        if podcast_data['image']:
+            self.download_image(podcast_data['image'])
+        self.__set_categories(podcast_data['categories'])
+
+    @staticmethod
+    def __get_category(title):
+        try:
+            category = Category.objects.get(title=title)
+        except Category.DoesNotExist:
+            category = Category(title=title)
+            category.save()
+        return category
+
+    def __set_categories(self, categories):
+        for category_key in categories.keys():
+            category = self.__get_category(category_key)
+            self.categories.add(category)
+            for sub_category in categories[category_key]:
+                sub_category = self.__get_category(sub_category)
+                if not sub_category.parent_category:
+                    # If the category isn't set to sub_category's parent
+                    sub_category.parent_category = category
+                    sub_category.save()
+                self.categories.add(sub_category)
+
+    def __set_tags(self, tags):
+        if not tags:
+            return
+        for tag in tags:
+            try:
+                tag_obj = Tag.objects.get(title=tag)
+            except Tag.DoesNotExist:
+                tag_obj = Tag(title=tag)
+                tag_obj.save()
+            self.tags.add(tag_obj)
 
 
 class Episode(models.Model):

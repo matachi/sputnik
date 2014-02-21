@@ -1,10 +1,16 @@
 from bs4 import BeautifulSoup
 import feedparser
+from urllib.error import HTTPError
 from urllib.request import urlopen
 
 
-def get_podcast_data(feed):
-    feed_xml = urlopen(feed).read()
+def get_podcast_data(feed_url):
+    try:
+        feed_request = urlopen(feed_url)
+    except HTTPError:
+        return
+
+    feed_xml = feed_request.read()
 
     feed = feedparser.parse(feed_xml).feed
     soup = BeautifulSoup(feed_xml)
