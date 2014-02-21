@@ -1,5 +1,11 @@
 FROM stackbrew/ubuntu:13.10
 
+# Set locale to UTF-8
+RUN locale-gen en_US.UTF-8
+RUN update-locale LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
 RUN apt-get update
 
 RUN mkdir /root/.pycharm_helpers
