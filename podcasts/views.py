@@ -24,6 +24,7 @@ from podcasts.serializers import SubscribeSerializer, ListenedSerializer
 
 class Podcasts(ListView):
     template_name = 'podcasts/podcasts.html'
+    paginate_by = 30
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
