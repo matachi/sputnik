@@ -8,6 +8,8 @@
   <hr>
 
   <div class="row">
+
+    {% comment %} Sidebar {% endcomment %}
     <div class="col-sm-3">
       <ul class="nav nav-stacked">
         {% for parent, children in categories.items %}
@@ -28,12 +30,14 @@
         {% endfor %}
       </ul>
     </div>
+
+    {% comment %} Podcast grid {% endcomment %}
     <div class="col-sm-9">
       <div class="row">
         {% for podcast in object_list %}
           <div class="col-xs-12 col-sm-4">
             <div class="thumbnail">
-              <a href="{% url 'podcasts:podcast' podcast.pk %}">
+              <a href="{{ podcast.get_absolute_url }}">
               {% if podcast.image %}
                 <img src="{{ podcast.image.url }}" alt="">
               {% else %}
@@ -57,6 +61,7 @@
           {% endif %}
         {% endfor %}
     </div>
+
   </div>
 
 {% endblock %}
