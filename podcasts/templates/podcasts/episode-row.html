@@ -1,7 +1,7 @@
 {% load inside %}
 
 <tr>
-  {% with listened=user.podcasts_profile|inside:episode.listeners.all %}
+  {% with listened=episode|inside:listened_episodes %}
     {% if user.is_authenticated %}
       {% if listened %}
         <td><span class="label label-default">Listened</span></td>

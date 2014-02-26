@@ -12,9 +12,11 @@
     </tr>
     </thead>
     <tbody class="valign-middle">
-    {% for episode in episodes %}
-      {% include 'podcasts/episode-row.html' with user=user episode=episode show_podcast=show_podcast %}
-    {% endfor %}
+    {% with listened_episodes=user.podcasts_profile.listened_to.all %}
+      {% for episode in episodes %}
+        {% include 'podcasts/episode-row.html' with user=user podcasts_profile=podcasts_profile episode=episode show_podcast=show_podcast %}
+      {% endfor %}
+    {% endwith %}
     </tbody>
   </table>
 </div>
