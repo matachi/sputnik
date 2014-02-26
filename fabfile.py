@@ -10,6 +10,11 @@ def update_podcasts():
         run('python3 manage.py updatepodcasts')
 
 
+def fetch_episodes():
+    with cd('"{}"'.format(os.path.dirname(__file__))):
+        run('python3 manage.py fetchepisodes')
+
+
 def setup_dev():
     with cd('"{}"'.format(os.path.dirname(__file__))):
         run('python3 manage.py syncdb')
