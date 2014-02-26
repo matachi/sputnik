@@ -2,6 +2,7 @@ $(function() {
     var $modal = $('#modalPlayer');
     var $modalTitle = $modal.find('.modal-title');
     var player = $modal.find('.player')[0];
+    var source = player.firstElementChild;
     var timeoutId = -1;
 
     $modal.modal({
@@ -44,9 +45,20 @@ $(function() {
 
     function openModalWindow(id, title, audioFile, authenticated) {
         $modalTitle.html(title);
-        if (player.getAttribute('src') !== audioFile) {
-            player.setAttribute('src', audioFile);
+        if (source.getAttribute('src') !== audioFile) {
+            source.setAttribute('src', audioFile);
+            var file_extension = audioFile.slice(-3);
+            switch (file_extension) {
+                case 'mp3':
+                    source.setAttribute('type', 'audio/mpeg')
+                    break;
+                case 'ogg':
+                case 'opus':
+                    source.setAttribute('type', 'audio/ogg')
+                    break;
+            }
         }
+        player.load();
 
         if (authenticated) {
             timeoutId = setTimeout(function checkIfListened() {
