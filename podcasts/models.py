@@ -4,8 +4,9 @@ from django.contrib.auth import get_user_model
 from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.utils.text import slugify
 import io
 import lxml
 from lxml.html.clean import Cleaner
@@ -46,12 +47,13 @@ class Podcast(models.Model):
     categories = models.ManyToManyField(Category, related_name='podcasts',
                                         blank=True)
     title_lock = models.BooleanField(default=False)
+    slug = models.SlugField(blank=True)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('podcasts:podcast', args=[self.id])
+        return reverse('podcasts:podcast', args=[self.slug or self.id])
 
     def get_language(self):
         return get_language(self.language) or 'Not specified'
@@ -90,6 +92,8 @@ class Podcast(models.Model):
         self.description = podcast_data['description']
         self.link = podcast_data['link']
         self.language = podcast_data['language']
+        if not self.slug:
+            self.slug = slugify(self.title)
         self.save()
         self.__set_tags(podcast_data['tags'])
         if podcast_data['image']:
@@ -127,6 +131,15 @@ class Podcast(models.Model):
                 tag_obj = Tag(title=tag)
                 tag_obj.save()
             self.tags.add(tag_obj)
+
+
+def add_slug(**kwargs):
+    if kwargs['raw']:
+        # If it's loaded from a fixture
+        instance = kwargs['instance']
+        # Create a slug based on the title
+        instance.slug = slugify(instance.title)
+pre_save.connect(add_slug, sender=Podcast)
 
 
 class Episode(models.Model):

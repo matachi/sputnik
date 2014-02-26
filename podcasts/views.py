@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.formtools.wizard.views import SessionWizardView
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404, redirect
 from django.utils import timezone
 from django.views.generic.list import ListView
 from django.views.generic.base import View, TemplateView
@@ -54,7 +54,10 @@ class Podcast(ListView):
     template_name = 'podcasts/podcast.html'
 
     def get_queryset(self):
-        self.podcast = get_object_or_404(models.Podcast, pk=self.args[0])
+        if len(self.args) > 0:
+            self.podcast = get_object_or_404(models.Podcast, pk=self.args[0])
+        elif self.kwargs['slug']:
+            self.podcast = get_list_or_404(models.Podcast, slug=self.kwargs['slug'])[0]
         return models.Episode.objects.filter(podcast=self.podcast)
 
     def get_context_data(self, **kwargs):
@@ -64,6 +67,14 @@ class Podcast(ListView):
         if self.request.user.is_authenticated():
             context['subscribed'] = self.podcast in self.request.user.podcasts_profile.subscribed_to.all()
         return context
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        if len(self.args) > 0 and self.podcast.slug:
+            # If the view was called with the podcast's ID and if it has a slug
+            return HttpResponseRedirect(self.podcast.get_absolute_url())
+        else:
+            return response
 
 
 class AddPodcast(SessionWizardView):
