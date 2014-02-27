@@ -27,6 +27,7 @@ class Podcasts(ListView):
     paginate_by = 30
 
     def get_context_data(self, **kwargs):
+        # print("IP Address for debug-toolbar: " + self.request.META['REMOTE_ADDR'])
         context = super().get_context_data(**kwargs)
         if len(self.args):
             context['category'] = Category.objects.get(id=self.args[0])

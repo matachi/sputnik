@@ -25,7 +25,15 @@ RUN pip install djangorestframework
 RUN pip install django-widget-tweaks
 RUN pip install django-haystack Whoosh
 RUN pip install beautifulsoup4
+RUN pip install django-debug-toolbar
 
+RUN apt-get install -y postgresql postgresql-client python3.3-psycopg2
+USER postgres
+RUN /etc/init.d/postgresql start &&\
+    psql --command "CREATE USER mypguser WITH PASSWORD 'pass';" &&\
+    createdb -O mypguser mydb
+
+USER root
 # Comment out a line from /etc/pam.d/sshd to not get `Connection to 127.0.0.1
 # closed. Exit status 254.` when connection to the container over ssh.
 RUN sed -i 's/^\(session    required     pam\_loginuid\.so\)/\#\1/' /etc/pam.d/sshd

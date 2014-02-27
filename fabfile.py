@@ -16,6 +16,7 @@ def fetch_episodes():
 
 
 def setup_dev():
+    run('/etc/init.d/postgresql start')
     with cd('"{}"'.format(os.path.dirname(__file__))):
         run('python3 manage.py syncdb')
         run('python3 manage.py loaddata sample_podcasts')

@@ -55,7 +55,11 @@ INSTALLED_APPS = (
     'users',
     'podcasts',
     'news',
+
+    # 'debug_toolbar',
 )
+
+INTERNAL_IPS = '172.17.42.1', '0.0.0.0', '127.0.0.1'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -110,8 +114,12 @@ HAYSTACK_CONNECTIONS = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'mydb',
+        'USER': 'mypguser',
+        'PASSWORD': 'pass',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
