@@ -54,3 +54,23 @@ Note that Fabric is only supported under Python 2.7. Then run:
 * `update_podcasts` will run `python3 manager.py updatepodcasts` in the
   container.
 * `rebuild_index` will rebuild the search index.
+
+## Production and live server
+
+### Setup
+
+Debian 7 setup script:
+
+    bash setup.sh
+
+### Controlling nginx and uWSGI
+
+* <http://nginx.org/en/docs/control.html>
+* <http://uwsgi-docs.readthedocs.org/en/latest/Management.html>
+
+    /etc/init.d/nginx start
+    /etc/init.d/nginx restart
+    kill -s SIGINT `cat mysite.pid`
+    source env/bin/activate
+    uwsgi --reload mysite.pid
+    uwsgi --stop mysite.pid
