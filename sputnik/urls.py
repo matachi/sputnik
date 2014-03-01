@@ -19,5 +19,11 @@ urlpatterns = patterns('',
         form_class=ModelSearchForm,
     ), name='haystack_search'),
     url(r'^admin/', include(admin.site.urls)),
-) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) +\
-    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
+
+if settings.DEBUG:
+    urlpatterns = urlpatterns + \
+                    static(settings.STATIC_URL,
+                           document_root=settings.STATIC_ROOT) + \
+                    static(settings.MEDIA_URL,
+                           document_root=settings.MEDIA_ROOT)
