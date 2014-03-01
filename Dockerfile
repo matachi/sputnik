@@ -26,6 +26,8 @@ RUN pip install django-widget-tweaks
 RUN pip install django-haystack Whoosh
 RUN pip install beautifulsoup4
 RUN pip install django-debug-toolbar
+RUN apt-get install csstidy
+RUN pip install slimit django-pipeline
 
 RUN apt-get install -y postgresql postgresql-client python3.3-psycopg2
 USER postgres

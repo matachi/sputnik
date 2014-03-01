@@ -25,7 +25,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -52,6 +52,8 @@ INSTALLED_APPS = (
 
     'widget_tweaks',
 
+    'pipeline',
+
     'users',
     'podcasts',
     'news',
@@ -68,6 +70,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pipeline.middleware.MinifyHTMLMiddleware',
 )
 
 ROOT_URLCONF = 'sputnik.urls'
@@ -108,6 +111,10 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+# Pipeline settings
+#STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+#PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.SlimItCompressor'
+#PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.csstidy.CSSTidyCompressor'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -145,6 +152,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'sputnik/static'),
