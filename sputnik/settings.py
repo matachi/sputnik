@@ -54,6 +54,7 @@ INSTALLED_APPS = (
 
     'pipeline',
 
+    'sputnik',
     'users',
     'podcasts',
     'news',

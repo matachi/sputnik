@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% load title %}
+
+{% block title %}{% title object.username %}{% endblock %}
 
 {% block content %}
   <div class="page-header">

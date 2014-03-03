@@ -1,4 +1,13 @@
 {% extends 'base.html' %}
+{% load title %}
+
+{% block title %}
+  {% if category %}
+    {% title "Podcasts" category.title %}
+  {% else %}
+    {% title "Podcasts" %}
+  {% endif %}
+{% endblock %}
 
 {% block content %}
   <div class="page-header">

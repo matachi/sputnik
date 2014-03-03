@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load title %}
 {% load inside %}
+
+{% block title %}{% title "Podcasts" episode.podcast.title episode.title %}{% endblock %}
 
 {% block script %}
   <script src="{% static 'js/podcasts/get-cookie.js' %}"></script>
