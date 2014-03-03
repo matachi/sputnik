@@ -60,7 +60,8 @@ class Podcast(ListView):
             self.podcast = get_object_or_404(models.Podcast, pk=self.args[0])
         elif self.kwargs['slug']:
             self.podcast = get_list_or_404(models.Podcast, slug=self.kwargs['slug'])[0]
-        return models.Episode.objects.filter(podcast=self.podcast)
+        return models.Episode.objects.filter(
+            podcast=self.podcast).order_by('-published')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
