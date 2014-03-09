@@ -1,5 +1,5 @@
-{%  if user.is_authenticated %}
-  <a href="{{  episode.audio_file }}" class="btn btn-primary btn-xs js-open" target="_blank" title="Open media file" data-episode-id="{{ episode.pk }}"><i class="fa fa-external-link fa-lg fa-fw"></i>{% if show_text %} Open media file in a new window{% endif %}</a>
+{% if user.is_authenticated %}
+  <a href="{{ episode.audio_file }}" class="btn btn-primary btn-xs js-open" target="_blank" title="Open media file" data-episode-id="{{ episode.pk }}"><i class="fa fa-external-link fa-fw"></i>{% if show_text %} Open media file in a new window{% endif %}</a>
 {% else %}
-  <a href="{{ episode.audio_file }}" class="btn btn-primary btn-xs" target="_blank" title="Open media file"><i class="fa fa-external-link fa-lg fa-fw"></i>{% if show_text %} Open media file in a new window{% endif %}</a>
+  <a href="{{ episode.audio_file }}" class="btn btn-primary btn-xs" target="_blank" title="Open media file"><i class="fa fa-external-link fa-fw"></i>{% if show_text %} Open media file in a new window{% endif %}</a>
 {% endif %}
