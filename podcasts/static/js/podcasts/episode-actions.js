@@ -57,8 +57,8 @@ $(function() {
                     source.setAttribute('type', 'audio/ogg')
                     break;
             }
+            player.load();
         }
-        player.load();
 
         if (authenticated) {
             timeoutId = setTimeout(function checkIfListened() {
