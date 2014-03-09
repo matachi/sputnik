@@ -225,7 +225,7 @@ class Subscribe(APIView):
         serializer = SubscribeSerializer(data=request.DATA)
         if serializer.is_valid():
             podcasts_user_profile = request.user.podcasts_profile
-            podcast = models.Podcast.objects.get(pk=serializer.data['podcast'])
+            podcast = models.Podcast.objects.get(slug=serializer.data['podcast'])
             if serializer.data['subscribe']:
                 podcasts_user_profile.subscribed_to.add(podcast)
                 return Response({'status': 'subscribed'},
