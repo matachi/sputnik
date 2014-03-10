@@ -13,8 +13,10 @@
   <div class="page-header">
     <h1>Podcast library{% if category %} <small>Category "{{ category }}"</small>{% endif %}</h1>
   </div>
-  <p>Not finding what you are looking for? Click <a href="{% url 'podcasts:add-podcast' %}">here</a> and instantly add the podcast feed to the site by yourself.</p>
-  <hr>
+  {% if user.is_authenticated %}
+    <p>Not finding what you are looking for? Click <a href="{% url 'podcasts:add-podcast' %}">here</a> and instantly add the podcast feed to the site by yourself.</p>
+    <hr>
+  {% endif %}
 
   <div class="row">
 
