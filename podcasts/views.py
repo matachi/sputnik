@@ -3,22 +3,24 @@ from django.contrib import messages
 from django.contrib.formtools.wizard.views import SessionWizardView
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, get_list_or_404, redirect
+from django.shortcuts import get_object_or_404, get_list_or_404
 from django.utils import timezone
 from django.views.generic.list import ListView
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
 from email.utils import formatdate
-import feedparser
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from lxml import etree
+from urllib.error import HTTPError
+
 from podcasts import models
+from podcasts.feed_tools import get_podcast_data
 from podcasts.forms import AddPodcastForm2, AddPodcastForm1
-from podcasts.models import Tag, Category
+from podcasts.models import Category
 from podcasts.serializers import SubscribeSerializer, ListenedSerializer
 
 
@@ -86,11 +88,16 @@ class AddPodcast(SessionWizardView):
     form_list = [AddPodcastForm1, AddPodcastForm2]
 
     def done(self, form_list, **kwargs):
-        # Merge the two dictionaries
-        cleaned_data = form_list[0].cleaned_data.copy()
-        cleaned_data.update(form_list[1].cleaned_data)
+        cleaned_data = form_list[1].cleaned_data.copy()
 
-        podcast = models.Podcast(**cleaned_data)
+        podcast_data = self.request.session['podcast_data']
+        del self.request.session['podcast_data']
+        podcast = models.Podcast()
+        if cleaned_data['title'] != podcast_data['title']:
+            podcast.title = cleaned_data['title']
+            podcast.title_lock = True
+            podcast.update_slug()
+        podcast.update(podcast_data)
         podcast.save()
 
         messages.success(self.request,
@@ -113,16 +120,24 @@ class AddPodcast(SessionWizardView):
             # `data` is form.data and is of the type QueryDict, here is how to
             # update such a object: https://docs.djangoproject.com/en/dev/ref/request-response/?from=olddocs#django.http.QueryDict.update
             feed_url = data.get('0-feed')
-            feed = feedparser.parse(feed_url).feed
-            if len(feed) == 0:
+            podcast_data = None
+            try:
+                podcast_data = get_podcast_data(feed_url)
+            except HTTPError:
                 form.add_error('feed',
                                'Couldn\'t fetch the page at that  URL, you ' +
                                'probably did a typo.')
-            else:
+            except AttributeError as e:
+                if e.args[0] == 'xml':
+                    form.add_error('feed', 'Not a valid feed.')
+                else:
+                    raise e
+            if podcast_data:
+                self.request.session['podcast_data'] = podcast_data
                 new_data = {
-                    '0-title': getattr(feed, 'title', ''),
-                    '0-description': getattr(feed, 'subtitle', ''),
-                    '0-link': getattr(feed, 'link', '')
+                    '0-title': podcast_data['title'],
+                    '0-description': podcast_data['description'],
+                    '0-link': podcast_data['link']
                 }
                 if len([x for x in new_data.values() if x == '']) == len(
                         new_data):

@@ -7,15 +7,19 @@ from urllib.request import urlopen
 def get_podcast_data(feed_url):
     try:
         feed_request = urlopen(feed_url)
-    except HTTPError:
-        return
+    except HTTPError as e:
+        raise e
 
     feed_xml = feed_request.read()
 
     feed = feedparser.parse(feed_xml).feed
     soup = BeautifulSoup(feed_xml)
+    try:
+        title = feed.title
+    except AttributeError:
+        raise AttributeError('xml')
     response = {
-        'title': feed.title,
+        'title': title,
         'description': feed.subtitle,
         'link': feed.link,
         'language': __get_language(feed),

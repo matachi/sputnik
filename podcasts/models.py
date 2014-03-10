@@ -12,6 +12,7 @@ import lxml
 from lxml.html.clean import Cleaner
 from tempfile import NamedTemporaryFile
 from urllib.request import urlopen
+import re
 from misc.languages import get_language
 from podcasts.feed_tools import get_podcast_data
 
@@ -64,6 +65,24 @@ class Podcast(models.Model):
     def title_or_unnamed(self):
         return self.title if self.title else 'unnamed'
 
+    def update_slug(self):
+        slug = slugify(self.title)
+        # There may already, for some reason, be podcasts in the database
+        # with the slug, for example "podcast", "podcast-1" and "podcast-2".
+        # So if we want to add yet another podcast with the slug "podcast",
+        # we would like to append "-3" to it.
+        starting_with_same_slug = Podcast.objects.filter(
+            slug__startswith=slug).order_by('slug')
+        if len(starting_with_same_slug):
+            # Either nothing or a dash with one or more following digits
+            pattern = re.compile('^$|^-\d+$')
+            # Count the number of podcasts with slugs mentioned above
+            have_same_base_slug = len([x for x in starting_with_same_slug if
+                                       pattern.match(x.slug[len(slug):])])
+            # Add the incremented version number
+            slug = '{}-{}'.format(slug, have_same_base_slug + 1)
+        self.slug = slug
+
     def download_image(self, url):
         # How to save an img from the net in a Django model:
         # http://stackoverflow.com/a/2141823/595990
@@ -93,7 +112,7 @@ class Podcast(models.Model):
         self.link = podcast_data['link']
         self.language = podcast_data['language']
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.update_slug()
         self.save()
         self.__set_tags(podcast_data['tags'])
         if podcast_data['image']:
