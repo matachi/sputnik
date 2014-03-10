@@ -1,0 +1,24 @@
+{# https://github.com/pennersr/django-allauth/blob/master/allauth/templates/account/logout.html #}
+{% extends 'account/base.html' %}
+
+{% load i18n %}
+{% load widget_tweaks %}
+{% load title %}
+
+{% block title %}{% title 'Sign in' %}{% endblock %}
+
+{% block content %}
+  <div class="page-header">
+    <h1>{% trans 'Sign out' %}</h1>
+  </div>
+
+  <p>{% trans 'Are you sure you want to sign out?' %}</p>
+
+  <form method="post" action="{% url 'account_logout' %}">
+    {% csrf_token %}
+    {% if redirect_field_value %}
+      <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
+    {% endif %}
+    <button type="submit" class="btn btn-sm btn-primary">{% trans 'Sign out' %}</button>
+  </form>
+{% endblock %}

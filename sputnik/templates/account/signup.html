@@ -1,0 +1,46 @@
+{# https://github.com/pennersr/django-allauth/blob/master/allauth/templates/account/signup.html #}
+{% extends 'account/base.html' %}
+
+{% load i18n %}
+{% load widget_tweaks %}
+{% load title %}
+
+{% block title %}{% title 'Sign up' %}{% endblock %}
+
+{% block content %}
+  <h1>{% trans 'Sign up' %}</h1>
+
+  <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+
+  <form class="form-horizontal" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+      {% if field.name != 'confirmation_key' %}
+        <div class="form-group{% if field.errors %} has-error{% endif %}">
+          <label for="id_{{ field.name }}" class="col-sm-2 control-label">{{ field.label }}</label>
+          <div class="col-sm-5">
+            {{ field|add_class:'form-control' }}
+          </div>
+          {% if field.errors %}
+            <div id="{{ field.name}}_errors" class="col-sm-5 help-block">
+              {% for error in field.errors %}
+                <i class="fa fa-exclamation fa-fw"></i> {{ error }}{% if not forloop.last %}<br>{% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% else %}
+        {{ field }}
+      {% endif %}
+    {% endfor %}
+    {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <div class="form-group">
+      <div class="col-sm-10 col-sm-offset-2">
+        <input type="submit" value="{% trans 'Sign up' %}" class="btn btn-primary" />
+      </div>
+    </div>
+  </form>
+{% endblock %}
