@@ -112,6 +112,14 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+
+ACCOUNT_EMAIL_SUBJECT_PREFIX = "PodFlare - "
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Pipeline settings
 #STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
 #PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.slimit.SlimItCompressor'
