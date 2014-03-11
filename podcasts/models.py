@@ -42,7 +42,7 @@ class Podcast(models.Model):
     feed = models.URLField()
     metadata_feed = models.URLField(blank=True)
     description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='podcasts')
+    image = models.ImageField(upload_to='podcasts', blank=True)
     language = models.CharField(max_length=2, blank=True)
     tags = models.ManyToManyField(Tag, related_name='podcasts', blank=True)
     categories = models.ManyToManyField(Category, related_name='podcasts',
