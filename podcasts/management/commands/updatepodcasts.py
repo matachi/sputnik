@@ -16,7 +16,16 @@ class Command(BaseCommand):
     )
 
     def handle(self, *args, **options):
-        for podcast in Podcast.objects.all():
+        if len(args):
+            podcasts = []
+            for arg in args:
+                if arg.isdigit():
+                    podcasts.extend(Podcast.objects.filter(pk=arg))
+                else:
+                    podcasts.extend(Podcast.objects.filter(slug=arg))
+        else:
+            podcasts = Podcast.objects.all()
+        for podcast in podcasts:
             if options['only_new'] and podcast.title != "":
                 continue
             podcast.update()
