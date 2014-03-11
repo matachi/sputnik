@@ -88,11 +88,13 @@ class AddPodcast(SessionWizardView):
     form_list = [AddPodcastForm1, AddPodcastForm2]
 
     def done(self, form_list, **kwargs):
-        cleaned_data = form_list[1].cleaned_data.copy()
+        cleaned_data = form_list[0].cleaned_data.copy()
+        cleaned_data.update(form_list[1].cleaned_data)
 
         podcast_data = self.request.session['podcast_data']
         del self.request.session['podcast_data']
         podcast = models.Podcast()
+        podcast.feed = cleaned_data['feed']
         if cleaned_data['title'] != podcast_data['title']:
             podcast.title = cleaned_data['title']
             podcast.title_lock = True
