@@ -39,3 +39,11 @@
 .podcast-info .media-controller {
     margin-top: 5px;
 }
+
+.table a {
+  text-decoration: none;
+}
+
+.table a:hover {
+  text-decoration: underline;
+}
