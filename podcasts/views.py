@@ -49,9 +49,10 @@ class Podcasts(ListView):
 
     def get_queryset(self):
         if len(self.args):
-            return models.Podcast.objects.filter(categories=self.args[0])
+            podcasts = models.Podcast.objects.filter(categories=self.args[0])
         else:
-            return models.Podcast.objects.all()
+            podcasts = models.Podcast.objects
+        return podcasts.exclude(title__exact='')
 
 
 class Podcast(ListView):
