@@ -10,8 +10,10 @@ from django.utils.text import slugify
 import io
 import lxml
 from lxml.html.clean import Cleaner
+import socket
 from tempfile import NamedTemporaryFile
-from urllib.request import urlopen
+from urllib.error import URLError
+from urllib.request import urlopen, Request
 import re
 from misc.languages import get_language
 from podcasts.feed_tools import get_podcast_data
@@ -84,11 +86,24 @@ class Podcast(models.Model):
         self.slug = slug
 
     def download_image(self, url):
+        """Download an image and set it as the cover.
+
+        Raises:
+            URLError: With reason being an instance of socket.timeout if the
+                url timed out.
+        """
         # How to save an img from the net in a Django model:
         # http://stackoverflow.com/a/2141823/595990
 
+        # Set the user agent to wget to follow Dropbox's redirects, since they
+        # seem to do user agent sniffing.
+        # For example will this handle Lets Talk Bitcoins cover image, otherwise
+        # it will just download Dropbox's HTML page.
+        request = Request(url=url, headers={'User-Agent': 'Wget/1337'})
         # Download the image to memory
-        image = io.BytesIO(urlopen(url).read())
+        response = urlopen(request, timeout=5)
+        # Create a binary file object in-memory of the response
+        image = io.BytesIO(response.read())
         # Now resize the image using Pillow
         image = Image.open(image)
         image = image.resize((400, 400), Image.ANTIALIAS)
@@ -115,9 +130,15 @@ class Podcast(models.Model):
             self.update_slug()
         self.save()
         self.__set_tags(podcast_data['tags'])
+        errors = []
         if podcast_data['image']:
-            self.download_image(podcast_data['image'])
+            try:
+                self.download_image(podcast_data['image'])
+            except URLError as e:
+                if isinstance(e.reason, socket.timeout):
+                    errors.append(e.reason)
         self.__set_categories(podcast_data['categories'])
+        return errors
 
     @staticmethod
     def __get_category(title):

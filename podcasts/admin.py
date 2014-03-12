@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.contrib.messages import constants
+import socket
+
 from podcasts.models import Podcast, Episode, PodcastUserProfile, Tag, Category
 
 
@@ -7,9 +10,21 @@ class EpisodeInline(admin.StackedInline):
     extra = 1
 
 
+def update_podcast(modeladmin, request, queryset):
+    for podcast in queryset:
+        for error in podcast.update():
+            if isinstance(error, socket.timeout):
+                message = "Downloading {}'s cover image timed out".format(
+                    podcast)
+                modeladmin.message_user(request, message, constants.WARNING)
+update_podcast.short_description = "Update selected podcasts with metadata " +\
+                                   "from their feeds"
+
+
 class PodcastAdmin(admin.ModelAdmin):
     inlines = (EpisodeInline,)
     list_display = ('title_or_unnamed', 'feed', 'link')
+    actions = [update_podcast]
 
 admin.site.register(Podcast, PodcastAdmin)
 
