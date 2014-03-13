@@ -1,40 +1,38 @@
 {% load inside %}
 
-{% with listened=episode|inside:listened_episodes %}
-  <div class="row">
-    <div class="col-xs-7 col-sm-8 col-md-8 col-lg-9">
+<div class="row">
+  <div class="col-xs-7 col-sm-8 col-md-8 col-lg-9">
+    <div class="row">
+      <div class="col-xs-12">
+        {% if show_podcast %}
+          <strong><a href="{{ episode.get_absolute_url }}">{{ episode.title }}</a></strong>
+        {% else %}
+          <a href="{{ episode.get_absolute_url }}">{{ episode.title }}</a>
+        {% endif %}
+      </div>
+    </div>
+    {% if show_podcast %}
       <div class="row">
         <div class="col-xs-12">
-          {% if show_podcast %}
-            <strong><a href="{{ episode.get_absolute_url }}">{{ episode.title }}</a></strong>
-          {% else %}
-            <a href="{{ episode.get_absolute_url }}">{{ episode.title }}</a>
-          {% endif %}
+          <a href="{{ episode.podcast.get_absolute_url }}">{{ episode.podcast.title }}</a>
         </div>
       </div>
-      {% if show_podcast %}
-        <div class="row">
-          <div class="col-xs-12">
-            <a href="{{ episode.podcast.get_absolute_url }}">{{ episode.podcast.title }}</a>
+    {% endif %}
+  </div>
+  <div class="col-xs-5 col-sm-4 col-md-4 col-lg-3">
+    <div class="row text-right">
+      <div class="col-sm-7 col-md-8 col-lg-8">
+        {{ episode.published|date:"N j, Y" }}
+      </div>
+      <div class="col-sm-5 col-md-4 col-lg-4">
+        {% if episode.link %}
+          <div class="btn-group">
+            {% include 'podcasts/includes/button-open.html' with show_text=False %}
+            {% include 'podcasts/includes/button-play.html' with show_text=False %}
           </div>
-        </div>
-      {% endif %}
-    </div>
-    <div class="col-xs-5 col-sm-4 col-md-4 col-lg-3">
-      <div class="row text-right">
-        <div class="col-sm-7 col-md-8 col-lg-8">
-          {{ episode.published|date:"N j, Y" }}
-        </div>
-        <div class="col-sm-5 col-md-4 col-lg-4">
-          {% if episode.link %}
-            <div class="btn-group">
-              {% include 'podcasts/includes/button-open.html' with show_text=False %}
-              {% include 'podcasts/includes/button-play.html' with show_text=False %}
-            </div>
-          {% endif %}
-        </div>
+        {% endif %}
       </div>
     </div>
   </div>
-  <hr>
-{% endwith %}
+</div>
+<hr>
