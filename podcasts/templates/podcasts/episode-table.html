@@ -1,22 +1,11 @@
 {% include 'podcasts/modal-player.html' %}
 
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      {% if user.is_authenticated %}<th></th>{% endif %}
-      {% if show_podcast %}<th>Podcast</th>{% endif %}
-      <th>Episode</th>
-      <th></th>
-      <th class="text-right">Published</th>
-    </tr>
-    </thead>
-    <tbody class="valign-middle">
-    {% with listened_episodes=user.podcasts_profile.listened_to.all %}
-      {% for episode in episodes %}
-        {% include 'podcasts/episode-row.html' with user=user podcasts_profile=podcasts_profile episode=episode show_podcast=show_podcast %}
-      {% endfor %}
-    {% endwith %}
-    </tbody>
-  </table>
-</div>
+{% with listened_episodes=user.podcasts_profile.listened_to.all %}
+  {% for episode in episodes %}
+    {% if user.is_authenticated %}
+      {% include 'podcasts/episode-row-signed-in.html' with user=user podcasts_profile=podcasts_profile episode=episode show_podcast=show_podcast %}
+    {% else %}
+      {% include 'podcasts/episode-row.html' with user=user podcasts_profile=podcasts_profile episode=episode show_podcast=show_podcast %}
+    {% endif %}
+  {% endfor %}
+{% endwith %}
