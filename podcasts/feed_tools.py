@@ -24,7 +24,7 @@ def get_podcast_data(feed_url):
         'link': feed.link,
         'language': __get_language(feed),
         'tags': __get_tags(feed),
-        'image': getattr(getattr(feed, 'image', None), 'href', None),
+        'images': __get_images(soup, feed),
         'categories': __get_categories(soup),
     }
     return response
@@ -51,3 +51,24 @@ def __get_tags(feed):
         return [tag.term for tag in feed.tags]
     except AttributeError:
         return []
+
+
+def __get_images(soup, feed):
+    images = []
+    # Find an image element that's a direct child to the channel element
+    image_tag = soup.channel.find('image', recurisve=False)
+    if image_tag:
+        url = getattr(getattr(image_tag, 'url', None), 'text', None)
+        if url:
+            images.append(url)
+    # Find an itunes:image inside the channel
+    itunes_image = soup.channel.find('itunes:image', recursive=False)
+    if itunes_image:
+        href = itunes_image.get('href')
+        if href and href not in images:
+            images.append(href)
+    # Lastly add feedparser's image if it isn't already in the list
+    feedparser_image = getattr(getattr(feed, 'image', None), 'href', None)
+    if feedparser_image not in images:
+        images.append(feedparser_image)
+    return images

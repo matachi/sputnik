@@ -131,12 +131,20 @@ class Podcast(models.Model):
         self.save()
         self.__set_tags(podcast_data['tags'])
         errors = []
-        if podcast_data['image']:
+        # Only add image errors if none could be downloaded and saved
+        image_errors = []
+        for image in podcast_data['images']:
             try:
-                self.download_image(podcast_data['image'])
+                self.download_image(image)
+                image_errors = []
             except URLError as e:
                 if isinstance(e.reason, socket.timeout):
-                    errors.append(e.reason)
+                    # When the image from the URL couldn't be fetched
+                    image_errors.append(e.reason)
+            except OSError as e:
+                # When it's not a valid image file
+                image_errors.append(e)
+        errors.extend(image_errors)
         self.__set_categories(podcast_data['categories'])
         return errors
 
