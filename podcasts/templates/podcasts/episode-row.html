@@ -25,7 +25,7 @@
         {{ episode.published|date:"N j, Y" }}
       </div>
       <div class="col-sm-5 col-md-4 col-lg-4">
-        {% if episode.link %}
+        {% if episode.audio_file %}
           <div class="btn-group">
             {% include 'podcasts/includes/button-open.html' with show_text=False %}
             {% include 'podcasts/includes/button-play.html' with show_text=False %}
