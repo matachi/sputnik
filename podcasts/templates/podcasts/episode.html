@@ -29,14 +29,16 @@
           {{ episode.published|date }}
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-2">
-          Episode link:
+      {% if episode.link %}
+        <div class="row">
+          <div class="col-xs-2">
+            Episode link:
+          </div>
+          <div class="col-xs-10">
+            {{ episode.link|urlize }}
+          </div>
         </div>
-        <div class="col-xs-10">
-          {{ episode.link|urlize }}
-        </div>
-      </div>
+      {% endif %}
       {% if user.is_authenticated %}
         <div class="row">
           <div class="col-xs-2">
