@@ -42,19 +42,21 @@
     </div>
   {% endif %}
   <div class="panel panel-default">
-    <div class="panel-heading">
-      Subscribed to the following podcasts
-    </div>
-    <div class="panel-body">
-      {% if object.podcasts_profile.subscribed_to.all %}
-        <ul class="list-unstyled">
-          {% for podcast in object.podcasts_profile.subscribed_to.all %}
-            <li><a href="{{ podcast.get_absolute_ur }}">{{ podcast }}</a></li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>{{ object.username }} hasn't subscribed to any podcasts yet.</p>
-      {% endif %}
-    </div>
+    {% with subscribed_to=object.podcasts_profile.subscribed_to.all %}
+      <div class="panel-heading">
+        Subscribed to {{ subscribed_to|length }} podcast{{ subscribed_to|pluralize }}
+      </div>
+      <div class="panel-body">
+        {% if subscribed_to %}
+          <ul class="list-unstyled">
+            {% for podcast in subscribed_to %}
+              <li><a href="{{ podcast.get_absolute_url }}">{{ podcast }}</a></li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p>{{ object.username }} hasn't subscribed to any podcasts yet.</p>
+        {% endif %}
+      </div>
+    {% endwith %}
   </div>
 {% endblock %}
