@@ -8,7 +8,16 @@ class Command(BaseCommand):
     help = 'Fetch new podcast episodes'
 
     def handle(self, *args, **kwargs):
-        for podcast in Podcast.objects.all():
+        if len(args):
+            podcasts = []
+            for arg in args:
+                if arg.isdigit():
+                    podcasts.extend(Podcast.objects.filter(pk=arg))
+                else:
+                    podcasts.extend(Podcast.objects.filter(slug=arg))
+        else:
+            podcasts = Podcast.objects.all()
+        for podcast in podcasts:
             episodes = podcast.episodes
             feed = feedparser.parse(podcast.feed)
             for feed_episode in feed.entries:
