@@ -16,7 +16,7 @@ from urllib.error import URLError
 from urllib.request import urlopen, Request
 import re
 from misc.languages import get_language
-from podcasts.feed_tools import get_podcast_data
+from podcasts.feed_tools import get_podcast_data, get_episode_data
 
 
 class Tag(models.Model):
@@ -180,6 +180,20 @@ class Podcast(models.Model):
                 tag_obj = Tag(title=tag)
                 tag_obj.save()
             self.tags.add(tag_obj)
+
+    def fetch_episodes(self):
+        """Fetch new episodes from the podcast's feed."""
+        # Titles of the episodes that the podcast already has
+        episode_titles = [episode.title for episode in self.episodes.all()]
+        # Get episodes from the feed that don't have titles in the
+        # episode_titles list, ie only new episodes
+        new_episodes = get_episode_data(self.feed, episode_titles)
+        for episode_data in new_episodes:
+            episode = Episode(
+                podcast=self,
+                **episode_data
+            )
+            episode.save()
 
 
 def add_slug(**kwargs):

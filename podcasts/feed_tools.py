@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from dateutil import parser
 import feedparser
 from urllib.error import HTTPError
 from urllib.request import urlopen
@@ -72,3 +73,51 @@ def __get_images(soup, feed):
     if feedparser_image not in images:
         images.append(feedparser_image)
     return images
+
+
+def get_episode_data(feed_url, existing_episode_titles):
+    feed = feedparser.parse(feed_url)
+    episodes = []
+    for feed_episode in feed.entries:
+        try:
+            if feed_episode.title in existing_episode_titles:
+                # If the episode already is in the DB
+                continue
+        except AttributeError:
+            # The episode in the feed doesn't have a title
+            continue
+        episodes.append({
+            'title': feed_episode.title,
+            'link': __get_link(feed_episode),
+            'description': __get_description(feed_episode),
+            'published': __get_published(feed_episode),
+            'audio_file': __get_audio_file(feed_episode),
+        })
+    return episodes
+
+
+def __get_link(episode):
+    return getattr(episode, 'link', '')
+
+
+def __get_published(episode):
+    # parser.parse(): http://stackoverflow.com/a/18726020/595990
+    return parser.parse(episode.published)
+
+
+def __get_audio_file(episode):
+    enclosures = getattr(episode, 'enclosures', '')
+    for enclosure in enclosures:
+        if enclosure.type[:5] == 'audio':
+            return enclosures[0].href
+    return ''
+
+
+def __get_description(episode):
+    summary = getattr(episode, 'summary', None)
+    if summary:
+        return summary
+    content = getattr(episode, 'content', None)
+    if content:
+        return content[0].value
+    return ''

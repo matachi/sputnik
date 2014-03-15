@@ -21,10 +21,17 @@ update_podcast.short_description = "Update selected podcasts with metadata " +\
                                    "from their feeds"
 
 
+def fetch_episodes(modeladmin, request, queryset):
+    for podcast in queryset:
+        podcast.fetch_episodes()
+fetch_episodes.short_description = "Fetch new episodes for the selected " +\
+                                   "podcasts"
+
+
 class PodcastAdmin(admin.ModelAdmin):
     inlines = (EpisodeInline,)
     list_display = ('title_or_unnamed', 'feed', 'link')
-    actions = [update_podcast]
+    actions = [update_podcast, fetch_episodes]
 
 admin.site.register(Podcast, PodcastAdmin)
 
