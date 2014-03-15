@@ -137,6 +137,7 @@ class Podcast(models.Model):
             try:
                 self.download_image(image)
                 image_errors = []
+                break
             except URLError as e:
                 if isinstance(e.reason, socket.timeout):
                     # When the image from the URL couldn't be fetched
