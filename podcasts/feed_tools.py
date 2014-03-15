@@ -21,7 +21,7 @@ def get_podcast_data(feed_url):
     response = {
         'title': title,
         'description': feed.subtitle,
-        'link': feed.link,
+        'link': getattr(feed, 'link', ""),
         'language': __get_language(feed),
         'tags': __get_tags(feed),
         'images': __get_images(soup, feed),
