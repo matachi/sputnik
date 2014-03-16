@@ -66,15 +66,15 @@
     {% if page.has_previous or page.has_next %}
       <ul class="pager">
         {% if page.has_previous %}
-          <li><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}"><strong>&laquo; Previous</strong></a>
+          <li class="previous"><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}"><strong>&laquo; Previous</strong></a>
         {% else %}
-          <li class="disabled"><strong>&laquo; Previous</strong></li>
+          <li class="previous disabled"><a><strong>&laquo; Previous</strong></a></li>
         {% endif %}
 
         {% if page.has_next %}
-          <li><a href="?q={{ query }}&amp;page={{ page.next_page_number }}"><strong>Next &raquo;</strong></a></li>
+          <li class="next"><a href="?q={{ query }}&amp;page={{ page.next_page_number }}"><strong>Next &raquo;</strong></a></li>
         {% else %}
-          <li class="disabled"><strong>Next &raquo;</strong></li>
+          <li class="next disabled"><a><strong>Next &raquo;</strong></a></li>
         {% endif %}
       </ul>
     {% endif %}
