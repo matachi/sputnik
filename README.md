@@ -74,3 +74,9 @@ Debian 7 setup script:
     source env/bin/activate
     uwsgi --reload mysite.pid
     uwsgi --stop mysite.pid
+
+### Upgrade PyPI packages
+
+<http://stackoverflow.com/questions/2720014/upgrading-all-packages-with-pip>:
+
+    pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs pip install -U
