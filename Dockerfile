@@ -25,6 +25,7 @@ RUN pip install djangorestframework
 RUN pip install django-widget-tweaks
 RUN pip install django-haystack Whoosh
 RUN pip install beautifulsoup4
+RUN pip install South
 RUN pip install django-debug-toolbar
 RUN apt-get install csstidy
 RUN pip install slimit django-pipeline

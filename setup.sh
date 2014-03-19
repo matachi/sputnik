@@ -30,6 +30,7 @@ pip install djangorestframework
 pip install django-widget-tweaks
 pip install django-haystack Whoosh
 pip install beautifulsoup4
+pip install South
 pip install django-debug-toolbar
 apt-get install csstidy
 pip install slimit django-pipeline
