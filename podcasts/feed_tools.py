@@ -70,7 +70,7 @@ def __get_images(soup, feed):
             images.append(href)
     # Lastly add feedparser's image if it isn't already in the list
     feedparser_image = getattr(getattr(feed, 'image', None), 'href', None)
-    if feedparser_image not in images:
+    if feedparser_image and feedparser_image not in images:
         images.append(feedparser_image)
     return images
 
