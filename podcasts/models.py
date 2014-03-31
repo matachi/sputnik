@@ -50,7 +50,7 @@ class Podcast(models.Model):
     categories = models.ManyToManyField(Category, related_name='podcasts',
                                         blank=True)
     title_lock = models.BooleanField(default=False)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField(max_length=100, blank=True)
 
     def __str__(self):
         return self.title
