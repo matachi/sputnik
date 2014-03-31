@@ -56,18 +56,18 @@ def __get_tags(feed):
 
 def __get_images(soup, feed):
     images = []
-    # Find an image element that's a direct child to the channel element
-    image_tag = soup.channel.find('image', recurisve=False)
-    if image_tag:
-        url = getattr(getattr(image_tag, 'url', None), 'text', None)
-        if url:
-            images.append(url)
     # Find an itunes:image inside the channel
     itunes_image = soup.channel.find('itunes:image', recursive=False)
     if itunes_image:
         href = itunes_image.get('href')
         if href and href not in images:
             images.append(href)
+    # Find an image element that's a direct child to the channel element
+    image_tag = soup.channel.find('image', recurisve=False)
+    if image_tag:
+        url = getattr(getattr(image_tag, 'url', None), 'text', None)
+        if url:
+            images.append(url)
     # Lastly add feedparser's image if it isn't already in the list
     feedparser_image = getattr(getattr(feed, 'image', None), 'href', None)
     if feedparser_image and feedparser_image not in images:
