@@ -107,6 +107,9 @@ class Podcast(models.Model):
         # Now resize the image using Pillow
         image = Image.open(image)
         image = image.resize((400, 400), Image.ANTIALIAS)
+        # Set correct image mode
+        if image.mode != 'RGB':
+            image = image.convert('RGB')
         # Create a temp file and save Pillow's image to the file
         image_tmp = NamedTemporaryFile(delete=True)
         image.save(image_tmp.name, 'JPEG', quality=75)
