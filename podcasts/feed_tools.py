@@ -32,7 +32,7 @@ def get_podcast_data(feed_url):
 
 
 def __get_language(feed):
-    return feed.language[:2]
+    return getattr(feed, 'language', '??')[:2]
 
 
 def __get_categories(soup):
