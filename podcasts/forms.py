@@ -24,6 +24,6 @@ class AddPodcastForm1(forms.Form):
 class AddPodcastForm2(forms.Form):
     title = forms.CharField(max_length=100, label='Title')
     link = forms.URLField(label='Address to homepage', widget=forms.TextInput(
-        attrs={'readonly': 'readonly'}))
+        attrs={'readonly': 'readonly'}), required=False)
     description = forms.CharField(label='Short summary', widget=forms.Textarea(
-        attrs={'readonly': 'readonly', 'rows': 5}))
+        attrs={'readonly': 'readonly', 'rows': 5}), required=False)
