@@ -72,6 +72,7 @@ Debian 7 setup script:
     /etc/init.d/nginx restart
     kill -s SIGINT `cat mysite.pid`
     source env/bin/activate
+    uwsgi --ini conf/uwsgi.ini
     uwsgi --reload mysite.pid
     uwsgi --stop mysite.pid
 
