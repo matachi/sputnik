@@ -2,12 +2,13 @@ from bs4 import BeautifulSoup
 from dateutil import parser
 import feedparser
 from urllib.error import HTTPError
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 
 def get_podcast_data(feed_url):
     try:
-        feed_request = urlopen(feed_url)
+        request = Request(url=feed_url, headers={'User-Agent': 'Wget/1337'})
+        feed_request = urlopen(request, timeout=5)
     except HTTPError as e:
         raise e
 
