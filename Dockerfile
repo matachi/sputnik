@@ -1,4 +1,4 @@
-FROM stackbrew/ubuntu:13.10
+FROM ubuntu
 
 # Set locale to UTF-8
 RUN locale-gen en_US.UTF-8
@@ -7,6 +7,7 @@ ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 RUN apt-get update
+RUN apt-get dist-upgrade -y
 
 RUN mkdir /root/.pycharm_helpers
 
@@ -15,6 +16,7 @@ RUN apt-get install -y openssh-server
 RUN echo "root:pass" | chpasswd
 RUN mkdir /var/run/sshd
 
+# Python 3
 RUN apt-get install -y python3 python3-setuptools sqlite3 python3-lxml python3-pillow
 RUN easy_install3 pip
 RUN pip install django feedparser
@@ -30,7 +32,7 @@ RUN pip install django-debug-toolbar
 RUN apt-get install csstidy
 RUN pip install slimit django-pipeline
 
-RUN apt-get install -y postgresql postgresql-client python3.3-psycopg2
+RUN apt-get install -y postgresql postgresql-client python3-psycopg2
 USER postgres
 RUN /etc/init.d/postgresql start &&\
     psql --command "CREATE USER mypguser WITH PASSWORD 'pass';" &&\
