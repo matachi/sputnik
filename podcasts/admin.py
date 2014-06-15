@@ -37,7 +37,7 @@ admin.site.register(Podcast, PodcastAdmin)
 
 
 class EpisodeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'link')
+    list_display = ('title', 'link', 'published')
     list_filter = ('podcast',)
     search_fields = ('title', 'description')
 
