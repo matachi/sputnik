@@ -43,4 +43,6 @@ USER root
 # closed. Exit status 254.` when connection to the container over ssh.
 RUN sed -i 's/^\(session    required     pam\_loginuid\.so\)/\#\1/' /etc/pam.d/sshd
 
+RUN sed -i 's/^\(PermitRootLogin\) without-password/\1 yes/' /etc/pam.d/sshd
+
 CMD /usr/sbin/sshd && bash
