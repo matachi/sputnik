@@ -19,6 +19,9 @@ from misc.languages import get_language
 from podcasts.feed_tools import get_podcast_data, get_episode_data
 
 
+LINK_MAX_LENGTH = 500
+
+
 class Tag(models.Model):
     title = models.CharField(max_length=30)
 
@@ -192,6 +195,8 @@ class Podcast(models.Model):
         # episode_titles list, ie only new episodes
         new_episodes = get_episode_data(self.feed, episode_titles)
         for episode_data in new_episodes:
+            if len(episode_data['link']) > LINK_MAX_LENGTH:
+                episode_data['link'] = ''
             episode = Episode(
                 podcast=self,
                 **episode_data
@@ -210,7 +215,7 @@ pre_save.connect(add_slug, sender=Podcast)
 
 class Episode(models.Model):
     title = models.CharField(max_length=255)
-    link = models.URLField(max_length=500, blank=True)
+    link = models.URLField(max_length=LINK_MAX_LENGTH, blank=True)
     description = models.TextField(blank=True)
     podcast = models.ForeignKey(Podcast, related_name='episodes')
     published = models.DateTimeField(blank=True)
