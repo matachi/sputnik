@@ -23,7 +23,7 @@ pip install Pillow
 aptitude install -y libxml2-dev libxslt1-dev
 pip install lxml
 
-pip install django
+pip install "django < 1.7"
 pip install feedparser
 pip install dateutils
 pip install django-allauth
