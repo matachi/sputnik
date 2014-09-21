@@ -210,7 +210,7 @@ pre_save.connect(add_slug, sender=Podcast)
 
 class Episode(models.Model):
     title = models.CharField(max_length=255)
-    link = models.URLField(max_length=300, blank=True)
+    link = models.URLField(max_length=500, blank=True)
     description = models.TextField(blank=True)
     podcast = models.ForeignKey(Podcast, related_name='episodes')
     published = models.DateTimeField(blank=True)
