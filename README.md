@@ -32,6 +32,12 @@ Fetch the podcasts' episodes:
 
     $ ./update.sh
 
+## Backup database
+
+Make an SQL dump:
+
+    $ pg_dump mydb -U mypguser -h localhost > database.sql
+
 ## Configure PyCharm
 
 To work with the project in PyCharm and still run it in Docker, read the
