@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:trusty
 
 # Set locale to UTF-8
 RUN locale-gen en_US.UTF-8
@@ -19,18 +19,20 @@ RUN mkdir /var/run/sshd
 # Python 3
 RUN apt-get install -y python3 python3-setuptools sqlite3 python3-lxml python3-pillow
 RUN easy_install3 pip
-RUN pip install "django < 1.7"
-RUN pip install feedparser
-RUN pip install dateutils
-RUN pip install django-allauth
-RUN pip install djangorestframework
-RUN pip install django-widget-tweaks
-RUN pip install django-haystack Whoosh
-RUN pip install beautifulsoup4
-RUN pip install South
+RUN pip install Django==1.6.5
+RUN pip install feedparser==5.1.3
+RUN pip install dateutils==0.6.6
+RUN pip install django-allauth==0.16.1
+RUN pip install djangorestframework==2.3.14
+RUN pip install django-widget-tweaks==1.3
+RUN pip install django-haystack==2.1.0
+RUN pip install Whoosh==2.6.0
+RUN pip install beautifulsoup4==4.3.2
+RUN pip install South==0.8.4
 RUN pip install django-debug-toolbar
 RUN apt-get install csstidy
-RUN pip install slimit django-pipeline
+RUN pip install slimit
+RUN pip install django-pipeline==1.3.24
 
 RUN apt-get install -y postgresql postgresql-client python3-psycopg2
 USER postgres
