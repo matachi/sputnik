@@ -47,4 +47,8 @@ RUN sed -i 's/^\(session    required     pam\_loginuid\.so\)/\#\1/' /etc/pam.d/s
 
 RUN sed -i 's/^\(PermitRootLogin\) without-password/\1 yes/' /etc/ssh/sshd_config
 
-CMD /usr/sbin/sshd && bash
+CMD /usr/sbin/sshd && \
+    /etc/init.d/postgresql start && \
+    python3 /home/sputnik/app/create_secret_key.py && \
+    python3 /home/sputnik/app/manage.py syncdb && \
+    bash

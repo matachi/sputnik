@@ -6,16 +6,31 @@ Podcast site built with Django.
 
 Build the Docker image:
 
-    sudo docker build -t matachi/sputnik .
+    $ sudo docker build -t matachi/sputnik .
 
 Run the image:
 
-    sudo docker run -i -t -v `pwd`:`pwd`:rw -p 127.0.0.1:8000:8000 -p 127.0.0.1:1337:22 matachi/sputnik
+    $ sudo docker run -i -t -v `pwd`:/home/sputnik/app:rw -p 8000:8000 -p 1337:22 matachi/sputnik
 
-In the container, `cd` into the project folder, which is located at the same
-path as on the host. Then start the Django development web server with:
+Then, inside the container, start the Django development web server:
 
-    python3 manage.py runserver 0.0.0.0:8000
+    $ python3 /home/sputnik/manage.py runserver 0.0.0.0:8000
+
+Finally open [127.0.0.1:8000](http://127.0.0.1:8000) in the web browser.
+
+## Load sample data
+
+Add a few podcasts to the database:
+
+    $ python3 manage.py loaddata sample_podcasts
+
+Fetch the metadata about these podcasts from their RSS feeds:
+
+    $ python3 manage.py updatepodcasts
+
+Fetch the podcasts' episodes:
+
+    $ ./update.sh
 
 ## Configure PyCharm
 
@@ -31,23 +46,33 @@ the following settings:
     Auth type: Password
     Password: pass
     Python interpreter path: /usr/bin/python3
-    PyCharm helpers path: /root/.pycharm_helpers
 
-And before starting a *Django server*, configure the host IP to `0.0.0.0:8000`.
+And before starting a *Django server*, make the following configurations:
+
+    Host: 0.0.0.0
+    Port: 8000
+    Path mappings: /path/to/sputnik/on/host=/home/hydra/app
+
+Where `/path/to/sputnik/on/host` is the directory on the host where this
+project directory is located.
 
 ## Load development data
+
+**TODO** Update this section.
 
 To automatically setup the development area in the Docker container with sample
 podcasts etc you can run the fabfile, which will execute the necessary
 commands. First you need to have Fabric installed:
 
-    sudo apt-get install fabric
+    $ sudo apt-get install fabric
 
 Note that Fabric is only supported under Python 2.7. Then run:
 
-    fab setup_dev
+    $ fab setup_dev
 
 ## Fabric commands
+
+**TODO** Update this section.
 
 * `setup_dev` will load sample podcasts, update the podcasts, fetch episodes
   etc.
@@ -59,11 +84,13 @@ Note that Fabric is only supported under Python 2.7. Then run:
 
 ### Setup
 
-Debian 7 setup script:
+Ubuntu setup script:
 
-    bash setup.sh
+    $ ./setup.sh
 
 ### Controlling nginx and uWSGI
+
+**TODO** Update this section.
 
 * <http://nginx.org/en/docs/control.html>
 * <http://uwsgi-docs.readthedocs.org/en/latest/Management.html>
@@ -77,6 +104,8 @@ Debian 7 setup script:
     uwsgi --stop mysite.pid
 
 ### Upgrade PyPI packages
+
+**TODO** Update this section.
 
 <http://stackoverflow.com/questions/2720014/upgrading-all-packages-with-pip>:
 
