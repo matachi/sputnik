@@ -23,16 +23,15 @@ pip install Pillow==2.4.0
 aptitude install -y libxml2-dev libxslt1-dev
 pip install lxml==3.3.5
 
-pip install Django==1.6.5
+pip install Django==1.7.2
 pip install feedparser==5.1.3
 pip install dateutils==0.6.6
-pip install django-allauth==0.16.1
-pip install djangorestframework==2.3.14
+pip install django-allauth==0.19.0
+pip install djangorestframework==3.0.2
 pip install django-widget-tweaks==1.3
-pip install django-haystack==2.1.0
+pip install django-haystack==2.3.1
 pip install Whoosh==2.6.0
 pip install beautifulsoup4==4.3.2
-pip install South==0.8.4
 
 #apt-get install csstidy
 #pip install slimit

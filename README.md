@@ -18,6 +18,12 @@ Then, inside the container, start the Django development web server:
 
 Finally open [127.0.0.1:8000](http://127.0.0.1:8000) in the web browser.
 
+If a Site model wasn't created:
+
+    $ python3 manage.py shell
+    >>> from django.contrib.sites.models import Site
+    >>> Site(1, 'http://localhost:8000', 'Sputnik').save()
+
 ## Load sample data
 
 Add a few podcasts to the database:

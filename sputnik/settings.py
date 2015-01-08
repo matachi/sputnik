@@ -37,7 +37,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
 
     # Required by allauth
     'django.contrib.sites',
@@ -53,8 +52,6 @@ INSTALLED_APPS = (
     'widget_tweaks',
 
     'pipeline',
-
-    'south',
 
     'sputnik',
     'users',

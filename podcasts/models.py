@@ -1,6 +1,5 @@
 from PIL import Image
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -262,7 +261,7 @@ class PodcastUserProfile(models.Model):
         return self.user.username
 
 
-@receiver(post_save, sender=get_user_model())
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def init_podcast_user_profile(instance, created, **kwarg):
     podcast_user_profile = PodcastUserProfile(user=instance)
     if created:

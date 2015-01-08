@@ -8,7 +8,7 @@ class NewsItem(models.Model):
     content = models.TextField()
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     published = models.DateTimeField()
-    stickied = models.BooleanField()
+    stickied = models.BooleanField(default=False)
     referenced_podcasts = models.ManyToManyField(Podcast,
                                                  related_name='news_items',
                                                  blank=True)
