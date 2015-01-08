@@ -1,6 +1,9 @@
 # Sputnik
 
-Podcast site built with Django.
+Podcast aggregator built with Django.
+
+Author: Daniel Jonsson  
+License: [MIT License](LICENSE)
 
 ## Run with Docker
 
