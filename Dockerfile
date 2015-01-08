@@ -20,7 +20,8 @@ RUN mkdir /var/run/sshd
 RUN apt-get install -y python3 python3-setuptools sqlite3 python3-lxml python3-pillow
 RUN easy_install3 pip
 RUN pip install Django==1.7.2
-RUN pip install feedparser==5.1.3
+# https://code.google.com/p/feedparser/issues/detail?id=403
+RUN pip install git+https://code.google.com/p/feedparser/
 RUN pip install dateutils==0.6.6
 RUN pip install django-allauth==0.19.0
 RUN pip install djangorestframework==3.0.2

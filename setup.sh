@@ -13,18 +13,19 @@ aptitude install python3-pip
 
 # Virtualenv
 pip3 install virtualenv
-sudo -u deploy virtualenv env
+sudo -u deploy virtualenv --system-site-packages -p /usr/bin/python3 env
 source env/bin/activate
 
 # Django site dependencies
 aptitude install -y libjpeg-dev zlib1g-dev
 pip install Pillow==2.4.0
 
-aptitude install -y libxml2-dev libxslt1-dev
-pip install lxml==3.3.5
+aptitude install -y python3-lxml
 
 pip install Django==1.7.2
 pip install feedparser==5.1.3
+# https://code.google.com/p/feedparser/issues/detail?id=403
+pip install git+https://code.google.com/p/feedparser/
 pip install dateutils==0.6.6
 pip install django-allauth==0.19.0
 pip install djangorestframework==3.0.2
@@ -43,9 +44,7 @@ chown -R deploy:deploy env
 python3 manage.py collectstatic
 
 # PostgreSQL
-aptitude install -y postgresql postgresql-client
-aptitude install -y libpq-dev
-pip install psycopg2
+aptitude install -y postgresql postgresql-client python3-psycopg2
 /etc/init.d/postgresql start &&\
     sudo -u postgres psql --command "CREATE USER mypguser WITH PASSWORD 'pass';" &&\
     sudo -u postgres createdb -O mypguser mydb
