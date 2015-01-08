@@ -18,6 +18,7 @@ RUN mkdir /var/run/sshd
 
 # Python 3
 RUN apt-get install -y python3 python3-setuptools sqlite3 python3-lxml python3-pillow
+RUN apt-get install -y git
 RUN easy_install3 pip
 RUN pip install Django==1.7.2
 # https://code.google.com/p/feedparser/issues/detail?id=403
