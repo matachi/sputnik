@@ -13,19 +13,13 @@ Build the Docker image:
 
 Run the image:
 
-    $ sudo docker run -i -t -v `pwd`:/home/sputnik/app:rw -p 8000:8000 -p 1337:22 matachi/sputnik
+    $ sudo docker run -i -t -v `pwd`:/home/sputnik/app:rw -p 80:8000 -p 1337:22 matachi/sputnik
 
 Then, inside the container, start the Django development web server:
 
-    $ python3 /home/sputnik/manage.py runserver 0.0.0.0:8000
+    $ python3 /home/sputnik/app/manage.py runserver 0.0.0.0:8000
 
-Finally open [127.0.0.1:8000](http://127.0.0.1:8000) in the web browser.
-
-If a Site model wasn't created:
-
-    $ python3 manage.py shell
-    >>> from django.contrib.sites.models import Site
-    >>> Site(1, 'http://localhost:8000', 'Sputnik').save()
+Finally open [localhost](http://localhost) in the web browser.
 
 ## Load sample data
 
