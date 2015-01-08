@@ -63,7 +63,7 @@ And before starting a *Django server*, make the following configurations:
 
     Host: 0.0.0.0
     Port: 8000
-    Path mappings: /path/to/sputnik/on/host=/home/hydra/app
+    Path mappings: /path/to/sputnik/on/host=/home/sputnik/app
 
 Where `/path/to/sputnik/on/host` is the directory on the host where this
 project directory is located.
