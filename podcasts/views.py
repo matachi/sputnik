@@ -89,8 +89,12 @@ class AddPodcast(SessionWizardView):
     form_list = [AddPodcastForm1, AddPodcastForm2]
 
     def done(self, form_list, **kwargs):
-        cleaned_data = form_list[0].cleaned_data.copy()
-        cleaned_data.update(form_list[1].cleaned_data)
+        # Iterator of the wizard's two forms
+        forms = iter(form_list)
+        # Extract submitted data from the first form
+        cleaned_data = next(forms).cleaned_data.copy()
+        # Update it with the data from the second form
+        cleaned_data.update(next(forms).cleaned_data)
 
         podcast_data = self.request.session['podcast_data']
         del self.request.session['podcast_data']
