@@ -18,21 +18,19 @@
   </ul>
   <p>If you also love podcasts, please do yourself a service and sign up by clicking <a href="{% url 'account_signup' %}">here</a>. It's completely free.</p>
   <div class="page-header">
-    <h1>Donate</h1>
-  </div>
-  <p><i class="fa fa-bitcoin fa-2x pull-left fa-border"></i> The hosting of the site costs 5 USD per month and the domain name costs about 10 USD per year, i.e. about 70 USD per year in total. This is payed from my own pocket. But if you want to help or just want to show your appreciation, feel free to make a Bitcoin donation to the address below.</p>
-  <p><a href="https://blockexplorer.com/address/1N4BSs2QjxMf7i8nE9EYDYNwyrSTVxCmYh">1N4BSs2QjxMf7i8nE9EYDYNwyrSTVxCmYh</a></p>
-  <img src="{% static 'img/bitcoin-qr.png' %}" class="img-thumbnail img-responsive">
-  <div class="page-header">
     <h1>Credits</h1>
   </div>
-  <h3>"This podcast has no cover art" image</h3>
+  <h3>No-cover-art image</h3>
   <img src="{{ MEDIA_URL }}podcasts/not-found.jpg" class="img-thumbnail img-responsive">
-  <p>The photo is taken by Thomas Leuthard, is licensed under <a href="http://creativecommons.org/licenses/by/2.0/deed.en">CC BY 2.0</a> and can be found on <a href="http://www.flickr.com/photos/thomasleuthard/11053921205/">his Flickr</a>. The font is called Ubuntu and can be downloaded <a href="http://font.ubuntu.com/">here</a>.</p>
+  <p>The photo is taken by Håkan Dahlström, is licensed under <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> and can be found on <a href="http://www.flickr.com/photos/thomasleuthard/11053921205/">his Flickr</a>.</p>
   <div class="page-header">
     <h1>Underlying technology</h1>
   </div>
   <p>This website's back end is written in Python 3 with the web framework Django as a base. On top of that are a bunch of Python libraries and Django apps utilized.</p>
   <p>As web server is Nginx being used and the application server uWSGI handles the Python part.</p>
-  <p>All of this is deployed on a VPS with the Linux distribution Debian.</p>
+  <p>All of this is deployed on a VPS with the Linux distribution Ubuntu.</p>
+  <div class="page-header">
+    <h1>Source code</h1>
+  </div>
+  <p>The source code is licensed under the MIT License and can be accessed at <a href="https://github.com/MaTachi/sputnik">Github</a>.</p>
 {% endblock %}
