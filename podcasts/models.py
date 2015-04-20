@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from django.utils.text import slugify
+from django.utils.text import slugify, Truncator
 import io
 import lxml
 from lxml.html.clean import Cleaner
@@ -196,6 +196,8 @@ class Podcast(models.Model):
         for episode_data in new_episodes:
             if len(episode_data['link']) > LINK_MAX_LENGTH:
                 episode_data['link'] = ''
+            # Truncate the title if it's too long
+            episode_data['title'] = Truncator(episode_data['title']).chars(255)
             episode = Episode(
                 podcast=self,
                 **episode_data

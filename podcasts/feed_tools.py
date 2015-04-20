@@ -3,6 +3,7 @@ from dateutil import parser
 import feedparser
 from urllib.error import HTTPError
 from urllib.request import urlopen, Request
+from django.utils.text import Truncator
 
 
 def get_podcast_data(feed_url):
@@ -81,7 +82,7 @@ def get_episode_data(feed_url, existing_episode_titles):
     episodes = []
     for feed_episode in feed.entries:
         try:
-            if feed_episode.title in existing_episode_titles:
+            if Truncator(feed_episode.title).chars(255) in existing_episode_titles:
                 # If the episode already is in the DB
                 continue
         except AttributeError:
